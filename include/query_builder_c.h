@@ -45,18 +45,7 @@ struct query {
  * A structure that store the information of a table of the database
  */
 struct table {
-	/*@{*/
 	char* table_name; /**< Name of the table represented */
-	/*@}*/
-	/**
-	 * @name list of methods
-	 */
-	/*@{*/
-	struct query* (*select)(struct table*);
-	struct query* (*insert)(struct table*);
-	struct query* (*update)(struct table*);
-	struct query* (*delete)(struct table*);
-	/*@}*/
 };
 
 /**
