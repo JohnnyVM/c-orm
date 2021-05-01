@@ -14,13 +14,22 @@ endif
 coverage ?= false
 # todo
 
+clang ?= false
+ifeq (${clang}, true)
+	CC := clang
+endif
+
 SOURCES := $(wildcard src/*.c)
 OBJECTS := $(patsubst %.c,%.o,${SOURCES})
 DEPENDENCIES := $(patsubst %.c,%.d,${SOURCES})
 
 INCLUDE_FLAGS := -I./include
-WARNING_FLAGS := -Wextra -Wall -Wshadow -Wdouble-promotion -Wpadded \
-	-Wformat=2 -Wformat-truncation -fno-common -Wconversion
+WARNING_FLAGS := -Wextra -Wall -Wshadow -Wdouble-promotion \
+	-Wformat=2 -fno-common -Wconversion
+ifeq (${clang}, false)
+WARNING_FLAGS += -Wformat-truncation
+endif
+
 CFLAGS += ${WARNING_FLAGS} ${INCLUDE_FLAGS} ${COMMON_FLAGS}
 export
 
