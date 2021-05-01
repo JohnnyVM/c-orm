@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['octet_5flength_4',['octet_length',['../structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d',1,'column']]]
+  ['logging_6',['logging',['../structlogging.html',1,'']]]
 ];

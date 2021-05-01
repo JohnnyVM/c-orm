@@ -70,79 +70,24 @@ $(function() {
 <div class="title">query_builder_c.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(QUERY_BUILDER_H)</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define QUERY_BUILDER_H</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(QUERY_BUILDER_C_H)</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define QUERY_BUILDER_C_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;errno.h&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">enum</span> driver_type {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    none,</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;};</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">enum</span> query_type {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    query_type_select, </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    query_type_insert, </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    query_type_update, </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    query_type_delete, </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structcolumn.html">   28</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a> {</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="structcolumn.html#aa7f592df6e606b5710a298907f3a1bd0">   29</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#aa7f592df6e606b5710a298907f3a1bd0">type</a>; </div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structcolumn.html#a11895e1e0a05c0130ae1182d28ab1f9d">   30</a></span>&#160;    <span class="keywordtype">char</span>* <a class="code" href="structcolumn.html#a11895e1e0a05c0130ae1182d28ab1f9d">name</a>; </div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">   31</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">octet_length</a>; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">   32</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">indicator</a>; </div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">   33</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">data</a>; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;};</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structquery.html">   39</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structquery.html">query</a> {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">enum</span> query_type type;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*values)(<span class="keyword">struct </span><a class="code" href="structquery.html">query</a>*, <span class="keywordtype">char</span>*, <span class="keywordtype">void</span>*); <span class="comment">// not used</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;};</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structtable.html">   47</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtable.html">table</a> {</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structtable.html#a9c50d6472752cce7002f6ad02ef6e160">   49</a></span>&#160;    <span class="keywordtype">char</span>* <a class="code" href="structtable.html#a9c50d6472752cce7002f6ad02ef6e160">table_name</a>; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*select)(<span class="keyword">struct </span><a class="code" href="structtable.html">table</a>*);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*insert)(<span class="keyword">struct </span><a class="code" href="structtable.html">table</a>*);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*update)(<span class="keyword">struct </span><a class="code" href="structtable.html">table</a>*);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*delete)(<span class="keyword">struct </span><a class="code" href="structtable.html">table</a>*);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">int</span> insert_values_char(<span class="keyword">struct</span> <a class="code" href="structquery.html">query</a>* <a class="code" href="structquery.html">query</a>, <span class="keywordtype">char</span>* key, <span class="keywordtype">char</span>* value);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">int</span> insert_values_int(<span class="keyword">struct</span> <a class="code" href="structquery.html">query</a>* <a class="code" href="structquery.html">query</a>, <span class="keywordtype">char</span>* key, intmax_t value);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#define insert_values(Q, K, X) _Generic((X), \</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">    char* : insert_values_char \</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">    const char* : insert_values_char \</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">    int : insert_values_int \</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">    const int : insert_values_int \</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">    unsigned : insert_values_int \</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">    const unsigned : insert_values_int \</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">    long : insert_values_int \</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">    const long : insert_values_int \</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">)(Q, K, X)</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keywordtype">int</span> <a class="code" href="select_8c.html#a541f2735c19acd7187c1e1528c4ae065">select</a>(<span class="keyword">struct</span> <a class="code" href="structquery.html">query</a>* <a class="code" href="structquery.html">query</a>, ...);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keywordtype">int</span> <a class="code" href="select_8c.html#ae989f99db3b8891806dd14c876472428">select_int</a>(<span class="keyword">struct</span> <a class="code" href="structquery.html">query</a>* <a class="code" href="structquery.html">query</a>, ...);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keywordtype">int</span> <a class="code" href="select_8c.html#a8e90f04c3c37ee42cb02a2acb479ac33">select_char</a>(<span class="keyword">struct</span> <a class="code" href="structquery.html">query</a>* <a class="code" href="structquery.html">query</a>, ...);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aselect_8c_html_a541f2735c19acd7187c1e1528c4ae065"><div class="ttname"><a href="select_8c.html#a541f2735c19acd7187c1e1528c4ae065">select</a></div><div class="ttdeci">int select(struct query *query,...)</div><div class="ttdef"><b>Definition:</b> select.c:5</div></div>
-<div class="ttc" id="aselect_8c_html_a8e90f04c3c37ee42cb02a2acb479ac33"><div class="ttname"><a href="select_8c.html#a8e90f04c3c37ee42cb02a2acb479ac33">select_char</a></div><div class="ttdeci">int select_char(struct query *query,...)</div><div class="ttdef"><b>Definition:</b> select.c:15</div></div>
-<div class="ttc" id="aselect_8c_html_ae989f99db3b8891806dd14c876472428"><div class="ttname"><a href="select_8c.html#ae989f99db3b8891806dd14c876472428">select_int</a></div><div class="ttdeci">int select_int(struct query *query,...)</div><div class="ttdef"><b>Definition:</b> select.c:10</div></div>
-<div class="ttc" id="astructcolumn_html"><div class="ttname"><a href="structcolumn.html">column</a></div><div class="ttdef"><b>Definition:</b> query_builder_c.h:28</div></div>
-<div class="ttc" id="astructcolumn_html_a11895e1e0a05c0130ae1182d28ab1f9d"><div class="ttname"><a href="structcolumn.html#a11895e1e0a05c0130ae1182d28ab1f9d">column::name</a></div><div class="ttdeci">char * name</div><div class="ttdef"><b>Definition:</b> query_builder_c.h:30</div></div>
-<div class="ttc" id="astructcolumn_html_a1dc0fa580ab09d03b5b3bce16e5b383d"><div class="ttname"><a href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">column::octet_length</a></div><div class="ttdeci">int octet_length</div><div class="ttdef"><b>Definition:</b> query_builder_c.h:31</div></div>
-<div class="ttc" id="astructcolumn_html_a532de478fc1ce68fb8634dd135cd243f"><div class="ttname"><a href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">column::indicator</a></div><div class="ttdeci">int indicator</div><div class="ttdef"><b>Definition:</b> query_builder_c.h:32</div></div>
-<div class="ttc" id="astructcolumn_html_a91b20d32e6f14c106f1691588436ba81"><div class="ttname"><a href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">column::data</a></div><div class="ttdeci">void * data</div><div class="ttdef"><b>Definition:</b> query_builder_c.h:33</div></div>
-<div class="ttc" id="astructcolumn_html_aa7f592df6e606b5710a298907f3a1bd0"><div class="ttname"><a href="structcolumn.html#aa7f592df6e606b5710a298907f3a1bd0">column::type</a></div><div class="ttdeci">int type</div><div class="ttdef"><b>Definition:</b> query_builder_c.h:29</div></div>
-<div class="ttc" id="astructquery_html"><div class="ttname"><a href="structquery.html">query</a></div><div class="ttdef"><b>Definition:</b> query_builder_c.h:39</div></div>
-<div class="ttc" id="astructtable_html"><div class="ttname"><a href="structtable.html">table</a></div><div class="ttdef"><b>Definition:</b> query_builder_c.h:47</div></div>
-<div class="ttc" id="astructtable_html_a9c50d6472752cce7002f6ad02ef6e160"><div class="ttname"><a href="structtable.html#a9c50d6472752cce7002f6ad02ef6e160">table::table_name</a></div><div class="ttdeci">char * table_name</div><div class="ttdef"><b>Definition:</b> query_builder_c.h:49</div></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;logging_c.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">/* List of  functions */</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;query_builder_common_c.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;query_builder_column_c.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;query_builder_table_c.h&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;query_builder_query_c.h&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;query_builder_select_c.h&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

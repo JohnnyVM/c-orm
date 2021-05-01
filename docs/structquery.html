@@ -70,21 +70,118 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="query__builder__c_8h_source.html">query_builder_c.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="query__builder__query__c_8h_source.html">query_builder_query_c.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a78268a84da513e3dd5085ba6071afb5a"><td class="memItemLeft" align="right" valign="top"><a id="a78268a84da513e3dd5085ba6071afb5a"></a>
-enum query_type&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="memitem:a78268a84da513e3dd5085ba6071afb5a"><td class="memItemLeft" align="right" valign="top">enum query_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a78268a84da513e3dd5085ba6071afb5a">type</a></td></tr>
 <tr class="separator:a78268a84da513e3dd5085ba6071afb5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77ca0831c9b20424e63a9d1f0f74f9fb"><td class="memItemLeft" align="right" valign="top"><a id="a77ca0831c9b20424e63a9d1f0f74f9fb"></a>
-struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><b>values</b> )(struct <a class="el" href="structquery.html">query</a> *, char *, void *)</td></tr>
-<tr class="separator:a77ca0831c9b20424e63a9d1f0f74f9fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d579a7c699282c5f74df88698d47d1c"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a5d579a7c699282c5f74df88698d47d1c">from</a> [MAX_IDENTIFIER_NAME_LENGTH]</td></tr>
+<tr class="separator:a5d579a7c699282c5f74df88698d47d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02dc8202e695db0aac280ae0696aeb7d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a02dc8202e695db0aac280ae0696aeb7d">select</a> )(struct <a class="el" href="structquery.html">query</a> *)</td></tr>
+<tr class="separator:a02dc8202e695db0aac280ae0696aeb7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a549abb205f83cb381da4c165a0838916"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a549abb205f83cb381da4c165a0838916">insert</a> )()</td></tr>
+<tr class="separator:a549abb205f83cb381da4c165a0838916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2f97a61bc63ce5adfa180b48e0ff5f5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#ac2f97a61bc63ce5adfa180b48e0ff5f5">update</a> )()</td></tr>
+<tr class="separator:ac2f97a61bc63ce5adfa180b48e0ff5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afda057584396ca302b9dfba46292ac2a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#afda057584396ca302b9dfba46292ac2a">delete</a> )()</td></tr>
+<tr class="separator:afda057584396ca302b9dfba46292ac2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A structure that store the information necesary for build a query </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/<a class="el" href="query__builder__c_8h_source.html">query_builder_c.h</a></li>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="afda057584396ca302b9dfba46292ac2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afda057584396ca302b9dfba46292ac2a">&#9670;&nbsp;</a></span>delete</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::delete) ()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>delete method </p>
+
+</div>
+</div>
+<a id="a5d579a7c699282c5f74df88698d47d1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d579a7c699282c5f74df88698d47d1c">&#9670;&nbsp;</a></span>from</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char query::from[MAX_IDENTIFIER_NAME_LENGTH]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>table_name i wich the operation will happen </p>
+
+</div>
+</div>
+<a id="a549abb205f83cb381da4c165a0838916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a549abb205f83cb381da4c165a0838916">&#9670;&nbsp;</a></span>insert</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::insert) ()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>insert method </p>
+
+</div>
+</div>
+<a id="a02dc8202e695db0aac280ae0696aeb7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02dc8202e695db0aac280ae0696aeb7d">&#9670;&nbsp;</a></span>select</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::select) (struct <a class="el" href="structquery.html">query</a> *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>List of methos from query select method </p>
+
+</div>
+</div>
+<a id="a78268a84da513e3dd5085ba6071afb5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78268a84da513e3dd5085ba6071afb5a">&#9670;&nbsp;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum query_type query::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>type of operation </p>
+
+</div>
+</div>
+<a id="ac2f97a61bc63ce5adfa180b48e0ff5f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2f97a61bc63ce5adfa180b48e0ff5f5">&#9670;&nbsp;</a></span>update</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::update) ()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>update method </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/<a class="el" href="query__builder__query__c_8h_source.html">query_builder_query_c.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

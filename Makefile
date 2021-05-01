@@ -33,7 +33,7 @@ endif
 CFLAGS += ${WARNING_FLAGS} ${INCLUDE_FLAGS} ${COMMON_FLAGS}
 export
 
-.PHONY: clean tests coverage library
+.PHONY: clean tests coverage library documentation
 
 ${OBJECTS}: %.o: %.c
 	${CC} -Werror ${CFLAGS} -MMD -c $< -o $@
@@ -53,3 +53,9 @@ lib:
 clean:
 	rm -rf ${OBJECTS} ${DEPENDENCIES} lib
 	-$(MAKE) -C tests clean
+
+documentation: | docs
+	doxygen Doxyfile
+
+docs:
+	mkdir $@

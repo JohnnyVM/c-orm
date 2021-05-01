@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['query_14',['query',['../structquery.html',1,'']]]
+  ['logging_15',['logging',['../structlogging.html',1,'']]]
 ];

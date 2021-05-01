@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['table_15',['table',['../structtable.html',1,'']]]
+  ['query_16',['query',['../structquery.html',1,'']]]
 ];
