@@ -13,4 +13,11 @@ enum driver_type {
 	none,
 };
 
+/**
+ * The errors in the library are reported in errno with values <0
+ */
+enum library_errno {
+	NO_ENOUGH_SPACE = -1
+};
+
 #endif

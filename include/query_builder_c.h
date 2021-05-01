@@ -1,14 +1,6 @@
 #if !defined(QUERY_BUILDER_C_H)
 #define QUERY_BUILDER_C_H
 
-#include <stdio.h>
-#include <stdint.h>
-#include <errno.h>
-
-#include "logging_c.h"
-
-
-/* List of  functions */
 #include "query_builder_common_c.h"
 #include "query_builder_column_c.h"
 #include "query_builder_table_c.h"

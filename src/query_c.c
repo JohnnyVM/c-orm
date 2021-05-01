@@ -6,8 +6,16 @@
 
 #include "logging_c.h"
 #include "query_builder_query_c.h"
-#include "query_builder_table_c.h"
 #include "query_builder_select_c.h"
+
+/**
+ * Clean query memory allocated
+ * @param[in] query Previously allocated query
+ */
+static void query_free(struct query* query)
+{
+	free(query);
+}
 
 /**
  * Method for build query sql
@@ -33,19 +41,17 @@ struct query* Query(struct table* table)
 		return NULL;
 	}
 
-	// from y name have same size
-	snprintf(query->from, sizeof query->from, "%s", table->name);
+	query->from = table->copy(table);
+	if(query == NULL) {
+		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s: %s", __func__, strerror(ENOMEM));
+		errno = ENOMEM;
+		return NULL;
+	}
 
 	query->select = &Select_query;
+	query->free = &query_free;
 
 	return query;
 }
 
-/**
- * Clean query memory allocated
- * @param[in] query Previously allocated query
- */
-void Query_free(struct query* query)
-{
-	free(query);
-}

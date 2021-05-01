@@ -44,17 +44,6 @@ struct query* Select_table(struct table* table)
 		return NULL;
 	}
 
-	struct query* query = malloc(sizeof *query);
-	if(query == NULL) {
-		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "%s: %s", __func__, strerror(ENOMEM));
-		errno = EINVAL;
-		return NULL;
-	}
-
-	// from y name have same size
-	snprintf(query->from, sizeof query->from, "%s", table->name);
-
-	return Select_query(query);
+	return Select_query(Query(table));
 }
 
