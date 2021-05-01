@@ -70,26 +70,43 @@ $(function() {
 <div class="title">query_builder_column_c.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(QUERY_BUILDER_TABLE_C_H)</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define QUERY_BUILDER_TABLE_C_H</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(QUERY_BUILDER_COLUMN_C_H)</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define QUERY_BUILDER_COLUMN_C_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;query_builder_common_c.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="structcolumn.html">    9</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structcolumn.html#aa7f592df6e606b5710a298907f3a1bd0">   10</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#aa7f592df6e606b5710a298907f3a1bd0">type</a>; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structcolumn.html#a603e7bff20e39adda86f7cd98f50a608">   11</a></span>&#160;    <span class="keywordtype">char</span> <a class="code" href="structcolumn.html#a603e7bff20e39adda86f7cd98f50a608">name</a>[MAX_IDENTIFIER_NAME_LENGTH]; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">   12</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">octet_length</a>; </div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">   13</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">indicator</a>; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">   14</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">data</a>; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;};</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="astructcolumn_html"><div class="ttname"><a href="structcolumn.html">column</a></div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:9</div></div>
-<div class="ttc" id="astructcolumn_html_a1dc0fa580ab09d03b5b3bce16e5b383d"><div class="ttname"><a href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">column::octet_length</a></div><div class="ttdeci">int octet_length</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:12</div></div>
-<div class="ttc" id="astructcolumn_html_a532de478fc1ce68fb8634dd135cd243f"><div class="ttname"><a href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">column::indicator</a></div><div class="ttdeci">int indicator</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:13</div></div>
-<div class="ttc" id="astructcolumn_html_a603e7bff20e39adda86f7cd98f50a608"><div class="ttname"><a href="structcolumn.html#a603e7bff20e39adda86f7cd98f50a608">column::name</a></div><div class="ttdeci">char name[MAX_IDENTIFIER_NAME_LENGTH]</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:11</div></div>
-<div class="ttc" id="astructcolumn_html_a91b20d32e6f14c106f1691588436ba81"><div class="ttname"><a href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">column::data</a></div><div class="ttdeci">void * data</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:14</div></div>
-<div class="ttc" id="astructcolumn_html_aa7f592df6e606b5710a298907f3a1bd0"><div class="ttname"><a href="structcolumn.html#aa7f592df6e606b5710a298907f3a1bd0">column::type</a></div><div class="ttdeci">int type</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:10</div></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">enum</span> column_type  {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    query_builder_VARCHAR,</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    query_builder_INTEGER,</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;};</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structcolumn.html">   14</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a> {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">enum</span> column_type <a class="code" href="structcolumn.html#adb14e52010f72e8e6fd23e5520921efd">type</a>; </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structcolumn.html#a603e7bff20e39adda86f7cd98f50a608">   17</a></span>&#160;    <span class="keywordtype">char</span> <a class="code" href="structcolumn.html#a603e7bff20e39adda86f7cd98f50a608">name</a>[MAX_IDENTIFIER_NAME_LENGTH]; </div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">   18</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">octet_length</a>; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">   19</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">indicator</a>; </div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structcolumn.html#acd322babce7c70b94db245f63e61b4eb">   20</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structcolumn.html#a748e1c918818e75b33cf466209514e4e">nullable</a>; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a>* (*copy)(<span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a>*); </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structcolumn.html#ab3e0459c93c4e34040222b60f71e1109">   27</a></span>&#160;    void (*<a class="code" href="structcolumn.html#ab3e0459c93c4e34040222b60f71e1109">free</a>)(<span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a>*); </div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">   30</a></span>&#160;    <span class="keywordtype">void</span>* <a class="code" href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">data</a>; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;};</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a>* Column(<span class="keywordtype">char</span>* <a class="code" href="structcolumn.html#a603e7bff20e39adda86f7cd98f50a608">name</a>, <span class="keyword">struct</span> <a class="code" href="structcolumn.html">column</a>* description);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a>* VARCHAR(<span class="keywordtype">unsigned</span> length);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="structcolumn.html#adb14e52010f72e8e6fd23e5520921efd">   53</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structcolumn.html">column</a>* INTEGER(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="astructcolumn_html"><div class="ttname"><a href="structcolumn.html">column</a></div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:14</div></div>
+<div class="ttc" id="astructcolumn_html_a1dc0fa580ab09d03b5b3bce16e5b383d"><div class="ttname"><a href="structcolumn.html#a1dc0fa580ab09d03b5b3bce16e5b383d">column::octet_length</a></div><div class="ttdeci">int octet_length</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:18</div></div>
+<div class="ttc" id="astructcolumn_html_a532de478fc1ce68fb8634dd135cd243f"><div class="ttname"><a href="structcolumn.html#a532de478fc1ce68fb8634dd135cd243f">column::indicator</a></div><div class="ttdeci">int indicator</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:19</div></div>
+<div class="ttc" id="astructcolumn_html_a603e7bff20e39adda86f7cd98f50a608"><div class="ttname"><a href="structcolumn.html#a603e7bff20e39adda86f7cd98f50a608">column::name</a></div><div class="ttdeci">char name[MAX_IDENTIFIER_NAME_LENGTH]</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:17</div></div>
+<div class="ttc" id="astructcolumn_html_a748e1c918818e75b33cf466209514e4e"><div class="ttname"><a href="structcolumn.html#a748e1c918818e75b33cf466209514e4e">column::nullable</a></div><div class="ttdeci">int nullable</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:20</div></div>
+<div class="ttc" id="astructcolumn_html_a91b20d32e6f14c106f1691588436ba81"><div class="ttname"><a href="structcolumn.html#a91b20d32e6f14c106f1691588436ba81">column::data</a></div><div class="ttdeci">void * data</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:30</div></div>
+<div class="ttc" id="astructcolumn_html_ab3e0459c93c4e34040222b60f71e1109"><div class="ttname"><a href="structcolumn.html#ab3e0459c93c4e34040222b60f71e1109">column::free</a></div><div class="ttdeci">void(* free)(struct column *)</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:27</div></div>
+<div class="ttc" id="astructcolumn_html_adb14e52010f72e8e6fd23e5520921efd"><div class="ttname"><a href="structcolumn.html#adb14e52010f72e8e6fd23e5520921efd">column::type</a></div><div class="ttdeci">enum column_type type</div><div class="ttdef"><b>Definition:</b> query_builder_column_c.h:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

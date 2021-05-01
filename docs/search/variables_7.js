@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['update_27',['update',['../structquery.html#ac2f97a61bc63ce5adfa180b48e0ff5f5',1,'query']]]
+  ['type_38',['type',['../structcolumn.html#adb14e52010f72e8e6fd23e5520921efd',1,'column::type()'],['../structquery.html#a78268a84da513e3dd5085ba6071afb5a',1,'query::type()']]]
 ];

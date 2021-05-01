@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['column_14',['column',['../structcolumn.html',1,'']]]
+  ['column_20',['column',['../structcolumn.html',1,'']]],
+  ['columns_21',['columns',['../structcolumns.html',1,'']]]
 ];

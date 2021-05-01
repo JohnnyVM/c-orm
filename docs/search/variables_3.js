@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['name_23',['name',['../structcolumn.html#a603e7bff20e39adda86f7cd98f50a608',1,'column::name()'],['../structtable.html#a7f5b0c38ffdd2dc2822e83a500908f0d',1,'table::name()']]]
+  ['indicator_32',['indicator',['../structcolumn.html#a532de478fc1ce68fb8634dd135cd243f',1,'column']]],
+  ['insert_33',['insert',['../structquery.html#af72ef7b6fd867279c0f79ae465f1844a',1,'query']]]
 ];

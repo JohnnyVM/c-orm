@@ -70,31 +70,37 @@ $(function() {
 <div class="title">query_builder_query_c.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="structquery.html#a78268a84da513e3dd5085ba6071afb5a">    1</a></span>&#160;<span class="preprocessor">#if !defined(QUERY_BUILDER_QUERY_C_H)</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(QUERY_BUILDER_QUERY_C_H)</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define QUERY_BUILDER_QUERY_C_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;query_builder_common_c.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">enum</span> query_type {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    query_type_select, </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    query_type_insert, </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    query_type_update, </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    query_type_delete, </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;};</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structquery.html">   19</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structquery.html">query</a> {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">enum</span> query_type <a class="code" href="structquery.html#a78268a84da513e3dd5085ba6071afb5a">type</a>; </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structquery.html#afda057584396ca302b9dfba46292ac2a">   21</a></span>&#160;    <span class="keywordtype">char</span> <a class="code" href="structquery.html#a5d579a7c699282c5f74df88698d47d1c">from</a>[MAX_IDENTIFIER_NAME_LENGTH]; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*select)(<span class="keyword">struct </span><a class="code" href="structquery.html">query</a>*); </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*insert)(); </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*update)(); </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*delete)(); </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;};</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="astructquery_html"><div class="ttname"><a href="structquery.html">query</a></div><div class="ttdef"><b>Definition:</b> query_builder_query_c.h:19</div></div>
-<div class="ttc" id="astructquery_html_a5d579a7c699282c5f74df88698d47d1c"><div class="ttname"><a href="structquery.html#a5d579a7c699282c5f74df88698d47d1c">query::from</a></div><div class="ttdeci">char from[MAX_IDENTIFIER_NAME_LENGTH]</div><div class="ttdef"><b>Definition:</b> query_builder_query_c.h:21</div></div>
-<div class="ttc" id="astructquery_html_a78268a84da513e3dd5085ba6071afb5a"><div class="ttname"><a href="structquery.html#a78268a84da513e3dd5085ba6071afb5a">query::type</a></div><div class="ttdeci">enum query_type type</div><div class="ttdef"><b>Definition:</b> query_builder_query_c.h:20</div></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;query_builder_table_c.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">enum</span> query_type {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    query_type_select, </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    query_type_insert, </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    query_type_update, </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    query_type_delete, </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;};</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structquery.html">   20</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structquery.html">query</a> {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">enum</span> query_type <a class="code" href="structquery.html#a78268a84da513e3dd5085ba6071afb5a">type</a>; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structquery.html#a47881f0c4eb35a5559f2b6140e1f7bb2">   23</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structtable.html">table</a> *<a class="code" href="structquery.html#a1551468d2be5cd6f2b585040de38e93b">from</a>; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*select)(<span class="keyword">struct </span><a class="code" href="structquery.html">query</a>*); </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*insert)(<span class="keyword">struct </span><a class="code" href="structquery.html">query</a>*); </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*update)(<span class="keyword">struct </span><a class="code" href="structquery.html">query</a>*); </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* (*delete)(<span class="keyword">struct </span><a class="code" href="structquery.html">query</a>*); </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structquery.html#a2dfe1048ccd9c7825324989d74ba477e">   33</a></span>&#160;    void (*<a class="code" href="structquery.html#a2dfe1048ccd9c7825324989d74ba477e">free</a>)(<span class="keyword">struct </span><a class="code" href="structquery.html">query</a>*); </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structquery.html#a78268a84da513e3dd5085ba6071afb5a">   42</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structquery.html">query</a>* Query(<span class="keyword">struct</span> <a class="code" href="structtable.html">table</a>* <a class="code" href="structtable.html">table</a>);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="astructquery_html"><div class="ttname"><a href="structquery.html">query</a></div><div class="ttdef"><b>Definition:</b> query_builder_query_c.h:20</div></div>
+<div class="ttc" id="astructquery_html_a1551468d2be5cd6f2b585040de38e93b"><div class="ttname"><a href="structquery.html#a1551468d2be5cd6f2b585040de38e93b">query::from</a></div><div class="ttdeci">struct table * from</div><div class="ttdef"><b>Definition:</b> query_builder_query_c.h:23</div></div>
+<div class="ttc" id="astructquery_html_a2dfe1048ccd9c7825324989d74ba477e"><div class="ttname"><a href="structquery.html#a2dfe1048ccd9c7825324989d74ba477e">query::free</a></div><div class="ttdeci">void(* free)(struct query *)</div><div class="ttdef"><b>Definition:</b> query_builder_query_c.h:33</div></div>
+<div class="ttc" id="astructquery_html_a78268a84da513e3dd5085ba6071afb5a"><div class="ttname"><a href="structquery.html#a78268a84da513e3dd5085ba6071afb5a">query::type</a></div><div class="ttdeci">enum query_type type</div><div class="ttdef"><b>Definition:</b> query_builder_query_c.h:22</div></div>
+<div class="ttc" id="astructtable_html"><div class="ttname"><a href="structtable.html">table</a></div><div class="ttdef"><b>Definition:</b> query_builder_table_c.h:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

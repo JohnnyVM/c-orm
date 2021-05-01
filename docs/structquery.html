@@ -76,28 +76,30 @@ $(function() {
 Public Attributes</h2></td></tr>
 <tr class="memitem:a78268a84da513e3dd5085ba6071afb5a"><td class="memItemLeft" align="right" valign="top">enum query_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a78268a84da513e3dd5085ba6071afb5a">type</a></td></tr>
 <tr class="separator:a78268a84da513e3dd5085ba6071afb5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d579a7c699282c5f74df88698d47d1c"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a5d579a7c699282c5f74df88698d47d1c">from</a> [MAX_IDENTIFIER_NAME_LENGTH]</td></tr>
-<tr class="separator:a5d579a7c699282c5f74df88698d47d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1551468d2be5cd6f2b585040de38e93b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structtable.html">table</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a1551468d2be5cd6f2b585040de38e93b">from</a></td></tr>
+<tr class="separator:a1551468d2be5cd6f2b585040de38e93b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02dc8202e695db0aac280ae0696aeb7d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a02dc8202e695db0aac280ae0696aeb7d">select</a> )(struct <a class="el" href="structquery.html">query</a> *)</td></tr>
 <tr class="separator:a02dc8202e695db0aac280ae0696aeb7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a549abb205f83cb381da4c165a0838916"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a549abb205f83cb381da4c165a0838916">insert</a> )()</td></tr>
-<tr class="separator:a549abb205f83cb381da4c165a0838916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2f97a61bc63ce5adfa180b48e0ff5f5"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#ac2f97a61bc63ce5adfa180b48e0ff5f5">update</a> )()</td></tr>
-<tr class="separator:ac2f97a61bc63ce5adfa180b48e0ff5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afda057584396ca302b9dfba46292ac2a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#afda057584396ca302b9dfba46292ac2a">delete</a> )()</td></tr>
-<tr class="separator:afda057584396ca302b9dfba46292ac2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af72ef7b6fd867279c0f79ae465f1844a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#af72ef7b6fd867279c0f79ae465f1844a">insert</a> )(struct <a class="el" href="structquery.html">query</a> *)</td></tr>
+<tr class="separator:af72ef7b6fd867279c0f79ae465f1844a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6b21111b8c10b67a6268288c4363d0b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#af6b21111b8c10b67a6268288c4363d0b">update</a> )(struct <a class="el" href="structquery.html">query</a> *)</td></tr>
+<tr class="separator:af6b21111b8c10b67a6268288c4363d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47881f0c4eb35a5559f2b6140e1f7bb2"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structquery.html">query</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a47881f0c4eb35a5559f2b6140e1f7bb2">delete</a> )(struct <a class="el" href="structquery.html">query</a> *)</td></tr>
+<tr class="separator:a47881f0c4eb35a5559f2b6140e1f7bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dfe1048ccd9c7825324989d74ba477e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquery.html#a2dfe1048ccd9c7825324989d74ba477e">free</a> )(struct <a class="el" href="structquery.html">query</a> *)</td></tr>
+<tr class="separator:a2dfe1048ccd9c7825324989d74ba477e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A structure that store the information necesary for build a query </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="afda057584396ca302b9dfba46292ac2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afda057584396ca302b9dfba46292ac2a">&#9670;&nbsp;</a></span>delete</h2>
+<a id="a47881f0c4eb35a5559f2b6140e1f7bb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47881f0c4eb35a5559f2b6140e1f7bb2">&#9670;&nbsp;</a></span>delete</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::delete) ()</td>
+          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::delete) (struct <a class="el" href="structquery.html">query</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -105,29 +107,44 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5d579a7c699282c5f74df88698d47d1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d579a7c699282c5f74df88698d47d1c">&#9670;&nbsp;</a></span>from</h2>
+<a id="a2dfe1048ccd9c7825324989d74ba477e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dfe1048ccd9c7825324989d74ba477e">&#9670;&nbsp;</a></span>free</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char query::from[MAX_IDENTIFIER_NAME_LENGTH]</td>
+          <td class="memname">void(* query::free) (struct <a class="el" href="structquery.html">query</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>table_name i wich the operation will happen </p>
+<p>free method </p>
 
 </div>
 </div>
-<a id="a549abb205f83cb381da4c165a0838916"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a549abb205f83cb381da4c165a0838916">&#9670;&nbsp;</a></span>insert</h2>
+<a id="a1551468d2be5cd6f2b585040de38e93b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1551468d2be5cd6f2b585040de38e93b">&#9670;&nbsp;</a></span>from</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::insert) ()</td>
+          <td class="memname">struct <a class="el" href="structtable.html">table</a>* query::from</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>principal table </p>
+
+</div>
+</div>
+<a id="af72ef7b6fd867279c0f79ae465f1844a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af72ef7b6fd867279c0f79ae465f1844a">&#9670;&nbsp;</a></span>insert</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::insert) (struct <a class="el" href="structquery.html">query</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -165,14 +182,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac2f97a61bc63ce5adfa180b48e0ff5f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2f97a61bc63ce5adfa180b48e0ff5f5">&#9670;&nbsp;</a></span>update</h2>
+<a id="af6b21111b8c10b67a6268288c4363d0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6b21111b8c10b67a6268288c4363d0b">&#9670;&nbsp;</a></span>update</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::update) ()</td>
+          <td class="memname">struct <a class="el" href="structquery.html">query</a>*(* query::update) (struct <a class="el" href="structquery.html">query</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
