@@ -1,3 +1,4 @@
+/** @file column_c.c */
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
