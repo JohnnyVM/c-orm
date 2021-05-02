@@ -2,6 +2,24 @@
 #define QUERY_BUILDER_TABLE_C_H
 
 #include "query_builder_common_c.h"
+#include "query_builder_column_c.h"
+
+/** its necesary a signal of ho many columns are passed */
+#define TABLE_END NULL
+
+enum table_property_type {
+	table_property_column,
+	table_property_constrain,
+};
+
+union table_property_option {
+	struct column* column;
+};
+
+struct table_property {
+	enum table_property_type type;
+	union table_property_option property;
+};
 
 struct columns {
 	struct column* column;
@@ -25,9 +43,9 @@ struct table {
 /**
  * Prepare a table of \p name with the columns added as args
  * @param[in] name name of the table
- * @param[in] ... origin list of columns
+ * @param[in] ... origin list of table properties
  * @return table
  */
-struct table* Table(char* name, ...);
+struct table* Table(char* name, struct table_property*, ...);
 
 #endif

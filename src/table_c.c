@@ -32,7 +32,7 @@ static struct table* table_copy(struct table* orig)
 	return dest;
 }
 
-struct table* Table(char* name, ...)
+struct table* Table(char* name, struct table_property* property, ...)
 {
 	struct logging *log;
 	if(name == NULL) {
@@ -58,6 +58,15 @@ struct table* Table(char* name, ...)
 
 	/* Asign list of methods */
 	table->copy = &table_copy;
+
+	va_list counter, ap;
+	va_start(counter, property);
+	va_copy(ap, counter);
+	while(property != TABLE_END) {
+		// todo
+		property = va_arg(counter, struct table_property*);
+	}
+	va_end(counter);
 
 	return table;
 }

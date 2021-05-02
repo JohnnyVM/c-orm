@@ -8,6 +8,7 @@
 #include "logging_c.h"
 #include "query_builder_common_c.h"
 #include "query_builder_column_c.h"
+#include "query_builder_table_c.h"
 
 static void column_free_tailed(struct column* orig)
 {
@@ -67,13 +68,21 @@ static struct column* column_copy(struct column* orig)
 	return NULL;
 }
 
-struct column* Column(char* name, struct column* column)
+struct table_property* Column(char* name, struct column* column)
 {
 	struct logging *log;
 	if(name == NULL || column == NULL) {
 		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s: %s", __func__, strerror(EINVAL));
 		errno = EINVAL;
+		return NULL;
+	}
+
+	struct table_property* property = malloc(sizeof *property);
+	if(property == NULL) {
+		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s: %s", __func__, strerror(ENOMEM));
+		errno = ENOMEM;
 		return NULL;
 	}
 
@@ -91,11 +100,14 @@ struct column* Column(char* name, struct column* column)
 	column->indicator = 0;
 	column->nullable = 0;
 
-	return column;
+	property->type = table_property_column;
+	property->property.column = column;
+	return property;
 }
 
 struct column* VARCHAR(unsigned length)
 {
+	if(length == 0) { length = 1; }
 	struct column* column = malloc(sizeof *column + length);
 	if(column == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);

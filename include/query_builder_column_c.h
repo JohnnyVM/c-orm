@@ -37,7 +37,7 @@ struct column {
  * @param length varchar length
  * @return created column
  */
-struct column* Column(char* name, struct column* description);
+struct table_property* Column(char* name, struct column* description);
 
 /**
  * create a column of type varchar
