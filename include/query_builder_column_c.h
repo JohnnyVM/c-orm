@@ -1,7 +1,12 @@
 #if !defined(QUERY_BUILDER_COLUMN_C_H)
 #define QUERY_BUILDER_COLUMN_C_H
 
+#include <stdarg.h>
+
 #include "query_builder_common_c.h"
+#include "query_builder_constraint_c.h"
+
+#define COLUMN_END NULL
 
 enum column_type  {
 	query_builder_VARCHAR,
@@ -18,6 +23,8 @@ struct column {
 	int octet_length; /**< length of the character representation of the datum in bytes */
 	int indicator; /**< the indicator (indicating a null value or a value truncation) */
 	int nullable; /**< nullable column */
+	struct constraint** constraint;
+	unsigned n_constraints;
 	/*@}*/
 	/**
 	 * List of methos from query
@@ -31,13 +38,13 @@ struct column {
 	/*@}*/
 };
 
-
 /**
  * create a column of type varchar
  * @param length varchar length
+ * @param ... list of column properties/modificators (primary_key, not null etc)
  * @return created column
  */
-struct table_property* Column(char* name, struct column* description);
+struct column* column(char* name, struct column* column, va_list constraints);
 
 /**
  * create a column of type varchar

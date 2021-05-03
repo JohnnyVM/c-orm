@@ -6,18 +6,14 @@
 /** Max name length for identify names of tables, columns, or other database objects */
 #define MAX_IDENTIFIER_NAME_LENGTH 64
 
+#define STRINGNIFY(a) str(a)
+#define str(a) #a
+
 /**
  * enum with the list of driver supported
  */
 enum driver_type {
 	none,
-};
-
-/**
- * The errors in the library are reported in errno with values <0
- */
-enum library_errno {
-	NO_ENOUGH_SPACE = -1
 };
 
 #endif

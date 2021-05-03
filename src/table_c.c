@@ -6,6 +6,7 @@
 
 #include "logging_c.h"
 #include "query_builder_common_c.h"
+#include "query_builder_error_c.h"
 #include "query_builder_table_c.h"
 
 static struct table* table_copy(struct table* orig)
@@ -18,11 +19,8 @@ static struct table* table_copy(struct table* orig)
 		return NULL;
 	}
 
-	struct table* dest = malloc(sizeof *dest);
+	struct table* dest = log_malloc(sizeof *dest);
 	if(dest == NULL) {
-		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "%s: %s", __func__, strerror(ENOMEM));
-		errno = ENOMEM;
 		return NULL;
 	}
 
@@ -32,6 +30,43 @@ static struct table* table_copy(struct table* orig)
 	return dest;
 }
 
+/**
+ * Wrapper for column function
+ */
+struct table_property* Column(char* name, struct column* col, ...)
+{
+	struct logging *log;
+	if(name == NULL || col == NULL) {
+		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s: %s", __func__, strerror(EINVAL));
+		errno = EINVAL;
+		return NULL;
+	}
+
+	struct table_property* dest = log_malloc(sizeof *dest);
+	if(dest == NULL) {
+		return NULL;
+	}
+
+	va_list args;
+	va_start(args, col);
+	struct column* column_dest = column(name, col, args);
+	va_end(args);
+	if(column_dest == NULL) {
+		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", query_builder_strerror(errno));
+		return NULL;
+	}
+
+	dest->type = table_property_column;
+	dest->property.column = column_dest;
+	return dest;
+}
+
+/**
+ * \todo Caveats. column and constraint fail with NULL, this behavior can be confused with end of VAR_ARGS,
+ * high level languages have exception but here we need implement the same with longjmp adn setjmp
+ */
 struct table* Table(char* name, struct table_property* property, ...)
 {
 	struct logging *log;
@@ -42,13 +77,13 @@ struct table* Table(char* name, struct table_property* property, ...)
 		return NULL;
 	}
 
-	struct table* table = malloc(sizeof *table);
+	struct table* table = log_malloc(sizeof *table);
 	if(table == NULL) {
-		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "%s: %s", __func__, strerror(ENOMEM));
-		errno = ENOMEM;
 		return NULL;
 	}
+
+	table->n_constraints = 0;
+	table->n_columns = 0;
 
 	int i = snprintf(table->name, MAX_IDENTIFIER_NAME_LENGTH, "%s", name);
 	if(i < 0 || i >= MAX_IDENTIFIER_NAME_LENGTH) {
