@@ -3,13 +3,6 @@
 
 #include "query_builder_common_c.h"
 
-enum constraint_type {
-	constraint_index,
-	constraint_not_null,
-	constraint_primary_key,
-	constraint_default,
-};
-
 struct constraint {
 	/*@{*/
 	enum constraint_type type;

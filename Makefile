@@ -16,7 +16,7 @@ coverage ?= false
 
 clang ?= false
 ifeq (${clang}, true)
-	CC := clang
+CC := clang
 endif
 
 SOURCES := $(wildcard src/*.c)
@@ -25,7 +25,7 @@ DEPENDENCIES := $(patsubst %.c,%.d,${SOURCES})
 
 INCLUDE_FLAGS := -I./include
 WARNING_FLAGS := -Wextra -Wall -Wshadow -Wdouble-promotion \
-	-Wformat=2 -fno-common -Wconversion
+		-Wformat=2 -fno-common -Wconversion
 ifeq (${clang}, false)
 WARNING_FLAGS += -Wformat-truncation
 endif

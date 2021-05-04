@@ -38,6 +38,7 @@ struct table {
 	 */
 	/*@{*/
 	struct table* (*copy)(struct table*); /**< \todo methods copy */
+	void (*free)(struct table*); /**< method free */
 	/*@}*/
 };
 

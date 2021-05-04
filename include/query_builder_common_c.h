@@ -27,4 +27,22 @@ struct va_arg_wrap {
 	void* payload;
 };
 
+enum constraint_type {
+	constraint_index,
+	constraint_not_null,
+	constraint_primary_key,
+	constraint_default,
+};
+
+/** Count number of va_args ending in 0 or NULL */
+unsigned va_list_constraint_type(enum constraint_type (*init)(void), ...);
+unsigned va_list_void(void* init, ...);
+
+#define va_list_count(...) va_list_count_expanded(__VA_ARGS__ __VA_OPT__(,) NULL)
+
+#define va_list_count_expanded(X, ...) _Generic((X), \
+		enum constraint_type (*)(void): va_list_constraint_type, \
+		void* : va_list_void \
+)(X __VA_OPT__(,) __VA_ARGS__ )
+
 #endif
