@@ -29,9 +29,9 @@ struct table_property {
  */
 struct table {
 	char name[MAX_IDENTIFIER_NAME_LENGTH]; /**< Name of the table represented */
-	struct column* column; /**< column list */
+	struct column* columns; /**< column list */
 	unsigned n_columns;
-	struct constraint* constraint; /**< constraint list */
+	struct constraint* constraints; /**< constraint list */
 	unsigned n_constraints;
 	/**
 	 * List of methods for table

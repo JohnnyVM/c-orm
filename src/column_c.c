@@ -22,9 +22,7 @@ static void column_free(struct column* orig)
 		log->error(log, "%s: %s", __func__, strerror(EINVAL));
 	}
 
-	for(unsigned i = 0; i < orig->n_constraints; ++i) {
-		orig->constraint[i]->free(orig->constraint[i]);
-	}
+	if(orig->n_constraints > 0 ) { free(orig->constraints); }
 
 	switch(orig->type) {
 		case query_builder_VARCHAR:
@@ -59,7 +57,8 @@ static struct column* column_copy(struct column* orig)
 		return NULL;
 	}
 
-	struct constraint** constraint_list = log_malloc(orig->n_constraints * sizeof *orig->constraint);
+	enum constraint_type (**constraint_list)(void) = \
+			log_malloc(orig->n_constraints * sizeof(enum constraint_type (*)(void)));
 	if(orig->n_constraints != 0 && constraint_list == NULL) {
 		return NULL;
 	}
@@ -71,12 +70,14 @@ static struct column* column_copy(struct column* orig)
 			dest = column_copy_tailed(orig);
 			break;
 	}
-	if(dest == NULL) { return NULL; }
-
-	dest->constraint = constraint_list;
-	for(unsigned i = 0; i < orig->n_constraints; ++i) {
-		dest->constraint[i] = orig->constraint[i]->copy(orig->constraint[i]);
+	if(dest == NULL) {
+		free(constraint_list);
+		return NULL;
 	}
+
+	dest->constraints = constraint_list;
+	dest->n_constraints = orig->n_constraints;
+	memcpy(dest->constraints, orig->constraints, orig->n_constraints * sizeof(enum constraint_type (*)(void)));
 
 	return dest;
 }
@@ -103,7 +104,7 @@ struct column* column(char* name, struct column* column, va_list args)
 
 	/* list of default values */
 	column->indicator = 0;
-	column->nullable = 0;
+	column->nullable = 1;
 
 	/* list of properties */
 	// Really the properties as NOT NULL, PRIMARY KEY, etc
@@ -116,18 +117,19 @@ struct column* column(char* name, struct column* column, va_list args)
 			i++;
 		}
 		va_end(counter_list);
-		column->constraint = log_malloc(i * sizeof column->constraint);
-		if(i > 0 && column->constraint == NULL) {
+		column->constraints = log_malloc(i * sizeof column->constraints);
+		if(i > 0 && column->constraints == NULL) {
+			log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 			column_free(column);
 			return NULL;
 		}
 
 		va_list ap;
-		struct constraint* elem;
+		enum constraint_type (*ptr_func)(void);
 		column->n_constraints = 0;
 		va_copy(ap, args);
-		while((elem = va_arg(ap, struct constraint*)) != NULL) {
-			column->constraint[column->n_constraints] = elem;
+		while((ptr_func = va_arg(ap, enum constraint_type (*)(void))) != NULL) {
+			column->constraints[column->n_constraints] = ptr_func;
 			++column->n_constraints;
 		}
 		va_end(ap);

@@ -23,7 +23,7 @@ struct column {
 	int octet_length; /**< length of the character representation of the datum in bytes */
 	int indicator; /**< the indicator (indicating a null value or a value truncation) */
 	int nullable; /**< nullable column */
-	struct constraint** constraint;
+	enum constraint_type (**constraints)(void); /**< pointer to funtions */
 	unsigned n_constraints;
 	/*@}*/
 	/**

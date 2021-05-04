@@ -1,6 +1,8 @@
 #if !defined(QUERY_BUILDER_ERROR_C_H)
 #define QUERY_BUILDER_ERROR_C_H
 
+#include <stdlib.h>
+
 enum query_builder_error_list {
 	INVALID_COLUMN_DEFINITION = -1,
 	IDENTIFIER_TRUNCATED = -2,
@@ -15,6 +17,8 @@ struct query_builder_error {
 const char* query_builder_strerror(int errcode);
 void* _log_malloc(size_t length, const char*, unsigned, const char*);
 #define log_malloc(X) _log_malloc(X, __FILE__, __LINE__, __func__)
+void* _log_realloc(void* el, size_t length, const char*, unsigned, const char*);
+#define log_realloc(X, L) _log_realloc(X, L, __FILE__, __LINE__, __func__)
 
 #endif
 

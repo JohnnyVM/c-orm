@@ -63,10 +63,6 @@ struct table_property* Column(char* name, struct column* col, ...)
 	return dest;
 }
 
-/**
- * \todo Caveats. column and constraint fail with NULL, this behavior can be confused with end of VAR_ARGS,
- * high level languages have exception but here we need implement the same with longjmp adn setjmp
- */
 struct table* Table(char* name, struct table_property* property, ...)
 {
 	struct logging *log;
