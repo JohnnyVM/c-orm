@@ -33,7 +33,7 @@ static struct table* table_copy(struct table* orig)
 /**
  * Wrapper for column function
  */
-struct table_property* Column(char* name, struct column* col, ...)
+struct table_property* inner_Column(char* name, struct column* col, unsigned n_args, ...)
 {
 	struct logging *log;
 	if(name == NULL || col == NULL) {
@@ -45,12 +45,14 @@ struct table_property* Column(char* name, struct column* col, ...)
 
 	struct table_property* dest = log_malloc(sizeof *dest);
 	if(dest == NULL) {
+		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", query_builder_strerror(errno));
 		return NULL;
 	}
 
 	va_list args;
-	va_start(args, col);
-	struct column* column_dest = column(name, col, args);
+	va_start(args, n_args);
+	struct column* column_dest = column(name, col, n_args, args);
 	va_end(args);
 	if(column_dest == NULL) {
 		log = get_logger(QUERY_BUILDER_LOGGER_NAME);

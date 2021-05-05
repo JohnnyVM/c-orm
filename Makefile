@@ -27,7 +27,7 @@ INCLUDE_FLAGS := -I./include
 WARNING_FLAGS := -Wextra -Wall -Wshadow -Wdouble-promotion \
 		-Wformat=2 -fno-common -Wconversion
 ifeq (${clang}, false)
-WARNING_FLAGS += -Wformat-truncation
+WARNING_FLAGS += -Wformat-truncation -fanalyzer
 endif
 
 CFLAGS += ${WARNING_FLAGS} ${INCLUDE_FLAGS} ${COMMON_FLAGS}

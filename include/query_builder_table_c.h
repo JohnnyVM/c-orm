@@ -50,6 +50,7 @@ struct table {
  */
 struct table* Table(char* name, struct table_property*, ...);
 
-struct table_property* Column(char* name, struct column* col, ...);
+struct table_property* inner_Column(char* name, struct column* col, unsigned n_args, ...);
+#define Column(ARG_NAME, ARG_COL, ...) inner_Column(ARG_NAME, ARG_COL, va_list_count(__VA_ARGS__), __VA_ARGS__)
 
 #endif

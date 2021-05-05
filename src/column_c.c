@@ -27,7 +27,7 @@ static void column_free(struct column* orig)
 	switch(orig->type) {
 		case query_builder_VARCHAR:
 		case query_builder_INTEGER:
-			return column_free_tailed(orig);
+			column_free_tailed(orig);
 		break;
 	}
 }
@@ -52,14 +52,8 @@ static struct column* column_copy(struct column* orig)
 	struct logging *log;
 	if(orig == NULL) {
 		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "%s: %s", __func__, strerror(EINVAL));
+		log->error(log, "%s", strerror(EINVAL));
 		errno = EINVAL;
-		return NULL;
-	}
-
-	enum constraint_type (**constraint_list)(void) = \
-			log_malloc(orig->n_constraints * sizeof(enum constraint_type (*)(void)));
-	if(orig->n_constraints != 0 && constraint_list == NULL) {
 		return NULL;
 	}
 
@@ -71,13 +65,22 @@ static struct column* column_copy(struct column* orig)
 			break;
 	}
 	if(dest == NULL) {
-		free(constraint_list);
+		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", query_builder_strerror(errno));
 		return NULL;
 	}
 
-	dest->constraints = constraint_list;
-	dest->n_constraints = orig->n_constraints;
-	memcpy(dest->constraints, orig->constraints, orig->n_constraints * sizeof(enum constraint_type (*)(void)));
+	if(orig->n_constraints > 0) {
+		enum constraint_type (**constraint_list)(void) = \
+				log_malloc(orig->n_constraints * sizeof(enum constraint_type (*)(void)));
+		if(orig->n_constraints > 0 && constraint_list == NULL) {
+			log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+			log->error(log, "%s", query_builder_strerror(errno));
+			return NULL;
+		}
+		memcpy(constraint_list, orig->constraints, orig->n_constraints * sizeof(enum constraint_type (*)(void)));
+		dest->constraints = constraint_list;
+	}
 
 	return dest;
 }
@@ -85,16 +88,22 @@ static struct column* column_copy(struct column* orig)
 /**
  * This function should not be called directly, but this is C, private methods doesnt exists
  */
-struct column* column(char* name, struct column* column, va_list args)
+struct column* column(char* name, struct column* column, unsigned n_args, va_list args)
 {
-	struct logging *log;
 	int check = snprintf(column->name, MAX_IDENTIFIER_NAME_LENGTH, "%s", name);
 	if(check < 0 || check >= MAX_IDENTIFIER_NAME_LENGTH) {
-		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		column_free(column);
 		log->error(log, "Invalid column name %s. %s",
 				name, query_builder_strerror(IDENTIFIER_TRUNCATED));
 		errno = IDENTIFIER_TRUNCATED;
+		return NULL;
+	}
+
+	column->constraints = log_malloc(n_args * sizeof(enum constraint_type (*)(void)));
+	if(column->constraints == NULL && n_args > 0) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", query_builder_strerror(ENOMEM));
 		return NULL;
 	}
 
@@ -109,33 +118,16 @@ struct column* column(char* name, struct column* column, va_list args)
 	/* list of properties */
 	// Really the properties as NOT NULL, PRIMARY KEY, etc
 	// are table constraints are added here and will be transfered to table
-	{
-		unsigned i = 0;
-		va_list counter_list;
-		va_copy(counter_list, args);
-		while(va_arg(counter_list, struct constraint*)) {
-			i++;
-		}
-		va_end(counter_list);
-		column->constraints = log_malloc(i * sizeof column->constraints);
-		if(i > 0 && column->constraints == NULL) {
-			log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-			column_free(column);
-			return NULL;
-		}
-
-		va_list ap;
-		enum constraint_type (*ptr_func)(void);
-		column->n_constraints = 0;
-		va_copy(ap, args);
-		while((ptr_func = va_arg(ap, enum constraint_type (*)(void))) != NULL) {
-			column->constraints[column->n_constraints] = ptr_func;
-			++column->n_constraints;
-		}
-		va_end(ap);
-
-		// todo list of pointer from contraint to column
+	va_list ap;
+	enum constraint_type (*ptr_func)(void);
+	column->n_constraints = 0;
+	va_copy(ap, args);
+	for(column->n_constraints = 0; column->n_constraints < n_args; ++column->n_constraints) {
+		ptr_func = va_arg(ap, enum constraint_type (*)(void));
+		column->constraints[column->n_constraints] = ptr_func;
+		++column->n_constraints;
 	}
+	va_end(ap);
 
 	return column;
 }
@@ -145,6 +137,8 @@ struct column* VARCHAR(unsigned length)
 	if(length == 0) { length = 1; }
 	struct column* column = log_malloc(sizeof *column + length);
 	if(column == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", query_builder_strerror(errno));
 		return NULL;
 	}
 
@@ -159,6 +153,8 @@ struct column* INTEGER(void)
 {
 	struct column* column = log_malloc(sizeof *column + sizeof(intmax_t));
 	if(column == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", query_builder_strerror(errno));
 		return NULL;
 	}
 
