@@ -5,13 +5,10 @@
 #include "query_builder_column_c.h"
 #include "query_builder_constraint_c.h"
 
-/** its necesary a signal of ho many columns are passed */
-#define TABLE_END NULL
-
 /* Motto: all problems in programming science can be solved adding a level of indirection*/
 enum table_property_type {
 	table_property_column,
-	table_property_constrain,
+	table_property_constraint,
 };
 
 union table_property_option {
@@ -22,6 +19,7 @@ union table_property_option {
 struct table_property {
 	enum table_property_type type;
 	union table_property_option property;
+	void (*free)(struct table_property*);
 };
 
 /**
@@ -41,6 +39,8 @@ struct table {
 	void (*free)(struct table*); /**< method free */
 	/*@}*/
 };
+
+void query_builder_table_property_free(struct table_property*);
 
 /**
  * Prepare a table of \p name with the columns added as args

@@ -19,7 +19,8 @@ static void column_free(struct column* orig)
 {
 	if(orig == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "%s: %s", __func__, strerror(EINVAL));
+		log->error(log, "%s", strerror(EINVAL));
+		return;
 	}
 
 	if(orig->n_constraints > 0 ) { free(orig->constraints); }
@@ -36,6 +37,8 @@ static struct column* column_copy_tailed(struct column* orig)
 {
 	struct column* dest = log_malloc(sizeof *orig + (size_t)orig->octet_length);
 	if(dest == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", strerror(EINVAL));
 		return NULL;
 	}
 
@@ -72,13 +75,13 @@ static struct column* column_copy(struct column* orig)
 
 	if(orig->n_constraints > 0) {
 		enum constraint_type (**constraint_list)(void) = \
-				log_malloc(orig->n_constraints * sizeof(enum constraint_type (*)(void)));
+				log_malloc(orig->n_constraints * sizeof *constraint_list);
 		if(orig->n_constraints > 0 && constraint_list == NULL) {
 			log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 			log->error(log, "%s", query_builder_strerror(errno));
 			return NULL;
 		}
-		memcpy(constraint_list, orig->constraints, orig->n_constraints * sizeof(enum constraint_type (*)(void)));
+		memcpy(constraint_list, orig->constraints, orig->n_constraints * sizeof *constraint_list);
 		dest->constraints = constraint_list;
 	}
 
@@ -100,7 +103,7 @@ struct column* query_builder_column(char* name, struct column* column, unsigned 
 		return NULL;
 	}
 
-	column->constraints = log_malloc(n_args * sizeof(enum constraint_type (*)(void)));
+	column->constraints = log_malloc(n_args * sizeof *column->constraints);
 	if(column->constraints == NULL && n_args > 0) {
 		column->free(column);
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
@@ -122,7 +125,6 @@ struct column* query_builder_column(char* name, struct column* column, unsigned 
 	for(column->n_constraints = 0; column->n_constraints < n_args; ++column->n_constraints) {
 		ptr_func = va_arg(ap, enum constraint_type (*)(void));
 		column->constraints[column->n_constraints] = ptr_func;
-		++column->n_constraints;
 	}
 	va_end(ap);
 

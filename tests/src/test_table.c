@@ -18,11 +18,4 @@ TEST_GROUP_C_TEARDOWN(table)
 
 TEST_C(table, create_clean)
 {
-	struct table* table = \
-	Table("create_clean",
-		Column("column1", INTEGER(), primary_key, COLUMN_END),
-		Column("column2", VARCHAR(1), COLUMN_END),
-		TABLE_END
-	);
-	table->free(table);
 }

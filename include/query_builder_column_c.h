@@ -6,8 +6,6 @@
 #include "query_builder_common_c.h"
 #include "query_builder_constraint_c.h"
 
-#define COLUMN_END NULL
-
 enum column_type  {
 	query_builder_VARCHAR,
 	query_builder_INTEGER,

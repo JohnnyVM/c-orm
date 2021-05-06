@@ -8,6 +8,34 @@
 #include "query_builder_common_c.h"
 #include "query_builder_error_c.h"
 #include "query_builder_table_c.h"
+#include "query_builder_constraint_c.h"
+
+void query_builder_table_property_free(struct table_property* property)
+{
+	struct logging *log;
+	if(property == NULL) {
+		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", strerror(EINVAL));
+		return;
+	}
+
+	struct constraint* constraint;
+	struct column* col;
+
+	switch(property->type) {
+		case table_property_column:
+			col = property->property.column;
+			col->free(col);
+			break;
+
+		case table_property_constraint:
+			constraint = property->property.constraint;
+			constraint->free(constraint);
+			break;
+	}
+
+	free(property);
+}
 
 static struct table* table_copy(struct table* orig)
 {
@@ -15,12 +43,13 @@ static struct table* table_copy(struct table* orig)
 	if(orig == NULL) {
 		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s: %s.", __func__, strerror(EINVAL));
-		errno = EINVAL;
 		return NULL;
 	}
 
 	struct table* dest = log_malloc(sizeof *dest);
 	if(dest == NULL) {
+		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s: %s.", __func__, strerror(EINVAL));
 		return NULL;
 	}
 
@@ -32,6 +61,7 @@ static struct table* table_copy(struct table* orig)
 
 /**
  * Wrapper for column function
+ * Must be called as Column
  */
 struct table_property* query_builder_table_column(char* name, struct column* col, unsigned n_args, ...)
 {
@@ -63,6 +93,7 @@ struct table_property* query_builder_table_column(char* name, struct column* col
 
 	dest->type = table_property_column;
 	dest->property.column = column_dest;
+	dest->free = &query_builder_table_property_free;
 	return dest;
 }
 
@@ -98,10 +129,7 @@ struct table* Table(char* name, struct table_property* property, ...)
 	va_list counter, ap;
 	va_start(counter, property);
 	va_copy(ap, counter);
-	while(property != TABLE_END) {
 		// todo
-		property = va_arg(counter, struct table_property*);
-	}
 	va_end(counter);
 
 	return table;
