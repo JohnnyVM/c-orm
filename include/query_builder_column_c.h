@@ -44,7 +44,7 @@ struct column {
  * @param ... list of column properties/modificators (primary_key, not null etc)
  * @return created column
  */
-struct column* column(char* name, struct column* column, unsigned n_args, va_list constraints);
+struct column* query_builder_column(char* name, struct column* column, unsigned n_args, va_list constraints);
 
 /**
  * create a column of type varchar

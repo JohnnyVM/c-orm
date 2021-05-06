@@ -1,9 +1,11 @@
 debug ?= false
+
+COMMON_FLAGS += -fstack-protector-strong
 ifeq (${debug}, true)
-	COMMON_FLAGS := -g3 -ggdb -ftrapv -fno-omit-frame-pointer \
+	COMMON_FLAGS += -g3 -ggdb -ftrapv -fno-omit-frame-pointer \
 		-fsanitize=address -fsanitize=leak -fsanitize=undefined
 else
-	COMMON_FLAGS := -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG
+	COMMON_FLAGS += -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG
 endif
 
 profile ?= false

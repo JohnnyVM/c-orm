@@ -46,7 +46,6 @@ void* _log_malloc(size_t length, const char* file, unsigned line, const char* fu
 	if(dest == NULL && length > 0) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s:%i:%s: %s", file, line, func, strerror(ENOMEM));
-		errno = ENOMEM;
 		return NULL;
 	}
 	return dest;
@@ -58,7 +57,6 @@ void* _log_realloc(void* el, size_t length, const char* file, unsigned line, con
 	if(dest == NULL && length > 0) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s:%i:%s: %s", file, line, func, strerror(ENOMEM));
-		errno = ENOMEM;
 		return NULL;
 	}
 	return dest;

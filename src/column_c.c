@@ -88,7 +88,7 @@ static struct column* column_copy(struct column* orig)
 /**
  * This function should not be called directly, but this is C, private methods doesnt exists
  */
-struct column* column(char* name, struct column* column, unsigned n_args, va_list args)
+struct column* query_builder_column(char* name, struct column* column, unsigned n_args, va_list args)
 {
 	int check = snprintf(column->name, MAX_IDENTIFIER_NAME_LENGTH, "%s", name);
 	if(check < 0 || check >= MAX_IDENTIFIER_NAME_LENGTH) {
@@ -102,14 +102,11 @@ struct column* column(char* name, struct column* column, unsigned n_args, va_lis
 
 	column->constraints = log_malloc(n_args * sizeof(enum constraint_type (*)(void)));
 	if(column->constraints == NULL && n_args > 0) {
+		column->free(column);
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", query_builder_strerror(ENOMEM));
 		return NULL;
 	}
-
-	/* list of methods */
-	column->copy = &column_copy;
-	column->free = &column_free;
 
 	/* list of default values */
 	column->indicator = 0;
@@ -146,6 +143,10 @@ struct column* VARCHAR(unsigned length)
 	column->octet_length = (int)length;
 	column->data = (void*)((uintptr_t)column + sizeof *column);
 
+	/* list of methods */
+	column->copy = &column_copy;
+	column->free = &column_free;
+
 	return column;
 }
 
@@ -161,6 +162,10 @@ struct column* INTEGER(void)
 	column->type = query_builder_INTEGER;
 	column->octet_length = sizeof(intmax_t);
 	column->data = (void*)((uintptr_t)column + sizeof *column);
+
+	/* list of methods */
+	column->copy = &column_copy;
+	column->free = &column_free;
 
 	return column;
 }
