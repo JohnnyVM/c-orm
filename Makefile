@@ -1,8 +1,7 @@
 debug ?= false
 
-COMMON_FLAGS += -fstack-protector-strong
 ifeq (${debug}, true)
-	COMMON_FLAGS += -g3 -ggdb -ftrapv -fno-omit-frame-pointer \
+	COMMON_FLAGS += -g3 -ftrapv -fno-omit-frame-pointer \
 		-fsanitize=address -fsanitize=leak -fsanitize=undefined
 else
 	COMMON_FLAGS += -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG
@@ -16,10 +15,7 @@ endif
 coverage ?= false
 # todo
 
-clang ?= false
-ifeq (${clang}, true)
-CC := clang
-endif
+CC ?= cc
 
 SOURCES := $(wildcard src/*.c)
 OBJECTS := $(patsubst %.c,%.o,${SOURCES})
@@ -27,8 +23,8 @@ DEPENDENCIES := $(patsubst %.c,%.d,${SOURCES})
 
 INCLUDE_FLAGS := -I./include
 WARNING_FLAGS := -Wextra -Wall -Wshadow -Wdouble-promotion \
-		-Wformat=2 -fno-common -Wconversion
-ifeq (${clang}, false)
+		-Wformat=2 -fno-common -Wconversion -Wundef
+ifneq (${CC}, cc)
 WARNING_FLAGS += -Wformat-truncation -fanalyzer
 endif
 
@@ -45,7 +41,7 @@ tests: ${OBJECTS}
 	LSAN_OPTIONS=verbosity=1:log_threads=1 ./tests/tests
 
 library: ${OBJECTS} | lib
-	ar -rc lib/libdictionary.a $^
+	ar -rc lib/libcorm.a $^
 
 lib:
 	mkdir lib
