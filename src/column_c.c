@@ -10,12 +10,12 @@
 #include "query_builder_table_c.h"
 #include "query_builder_column_c.h"
 
-static void column_free_tailed(struct column* orig)
+static void column_free_tailed(struct query_builder_column* orig)
 {
 	free(orig);
 }
 
-static void column_free(struct column* orig)
+static void column_free(struct query_builder_column* orig)
 {
 	if(orig == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
@@ -33,9 +33,9 @@ static void column_free(struct column* orig)
 	}
 }
 
-static struct column* column_copy_tailed(struct column* orig)
+static struct query_builder_column* column_copy_tailed(struct query_builder_column* orig)
 {
-	struct column* dest = log_malloc(sizeof *orig + (size_t)orig->octet_length);
+	struct query_builder_column* dest = log_malloc(sizeof *orig + (size_t)orig->octet_length);
 	if(dest == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(EINVAL));
@@ -50,7 +50,7 @@ static struct column* column_copy_tailed(struct column* orig)
 	return dest;
 }
 
-static struct column* column_copy(struct column* orig)
+static struct query_builder_column* column_copy(struct query_builder_column* orig)
 {
 	struct logging *log;
 	if(orig == NULL) {
@@ -60,7 +60,7 @@ static struct column* column_copy(struct column* orig)
 		return NULL;
 	}
 
-	struct column* dest = NULL;
+	struct query_builder_column* dest = NULL;
 	switch(orig->type) {
 		case query_builder_VARCHAR:
 		case query_builder_INTEGER:
@@ -91,7 +91,7 @@ static struct column* column_copy(struct column* orig)
 /**
  * This function should not be called directly, but this is C, private methods doesnt exists
  */
-struct column* query_builder_column(char* name, struct column* column, unsigned n_args, va_list args)
+struct query_builder_column* query_builder_column(char* name, struct query_builder_column* column, unsigned n_args, va_list args)
 {
 	int check = snprintf(column->name, MAX_IDENTIFIER_NAME_LENGTH, "%s", name);
 	if(check < 0 || check >= MAX_IDENTIFIER_NAME_LENGTH) {
@@ -131,10 +131,10 @@ struct column* query_builder_column(char* name, struct column* column, unsigned 
 	return column;
 }
 
-struct column* VARCHAR(unsigned length)
+struct query_builder_column* VARCHAR(unsigned length)
 {
 	if(length == 0) { length = 1; }
-	struct column* column = log_malloc(sizeof *column + length);
+	struct query_builder_column* column = log_malloc(sizeof *column + length);
 	if(column == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", query_builder_strerror(errno));
@@ -152,9 +152,9 @@ struct column* VARCHAR(unsigned length)
 	return column;
 }
 
-struct column* INTEGER(void)
+struct query_builder_column* INTEGER(void)
 {
-	struct column* column = log_malloc(sizeof *column + sizeof(intmax_t));
+	struct query_builder_column* column = log_malloc(sizeof *column + sizeof(intmax_t));
 	if(column == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", query_builder_strerror(errno));

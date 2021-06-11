@@ -10,12 +10,12 @@ TEST_GROUP_C_WRAPPER(column)
 TEST_C_WRAPPER(column, create_varchar);
 TEST_C_WRAPPER(column, create_integer);
 
-//TEST_GROUP_C_WRAPPER(table)
-//{
-//    TEST_GROUP_C_SETUP_WRAPPER(table); /** optional */
-//    TEST_GROUP_C_TEARDOWN_WRAPPER(table); /** optional */
-//};
-//TEST_C_WRAPPER(table, table_clean);
+TEST_GROUP_C_WRAPPER(table)
+{
+    TEST_GROUP_C_SETUP_WRAPPER(table); /** optional */
+    TEST_GROUP_C_TEARDOWN_WRAPPER(table); /** optional */
+};
+TEST_C_WRAPPER(table, create_free);
 
 int main(int ac, char** av)
 {

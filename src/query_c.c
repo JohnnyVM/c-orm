@@ -5,6 +5,7 @@
 #include <errno.h>
 
 #include "logging_c.h"
+#include "query_builder_table_c.h"
 #include "query_builder_query_c.h"
 #include "query_builder_select_c.h"
 
@@ -19,11 +20,11 @@ static void query_free(struct query* query)
 
 /**
  * Method for build query sql
- * @param[in] table the table in wich you do the select
+ * @param[in] table the table in wich you do the query
  * @return Return a struct query prepared for select from the object table
  * output must be freed quth Query_free
  */
-struct query* Query(struct table* table)
+struct query* Query(struct query_builder_table* table)
 {
 	struct logging *log;
 	if(table == NULL) {

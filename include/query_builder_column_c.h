@@ -14,7 +14,7 @@ enum column_type  {
 /**
  * A structure that store the column information
  */
-struct column {
+struct query_builder_column {
 	/*@{*/
 	enum column_type type; /**< numeric code of the data type of the column */
 	char name[MAX_IDENTIFIER_NAME_LENGTH]; /**< name of the column */
@@ -28,8 +28,8 @@ struct column {
 	 * List of methos from query
 	 */
 	/*@{*/
-	struct column* (*copy)(struct column*); /** copy method */
-	void (*free)(struct column*); /**< free method */
+	struct query_builder_column* (*copy)(struct query_builder_column*); /** copy method */
+	void (*free)(struct query_builder_column*); /**< free method */
 	/*@}*/
 	/*@{*/
 	void* data; /**< actual data item, has to be in the last position */
@@ -42,19 +42,19 @@ struct column {
  * @param ... list of column properties/modificators (primary_key, not null etc)
  * @return created column
  */
-struct column* query_builder_column(char* name, struct column* column, unsigned n_args, va_list constraints);
+struct query_builder_column* query_builder_column(char* name, struct query_builder_column* column, unsigned n_args, va_list constraints);
 
 /**
  * create a column of type varchar
  * @param length varchar length
  * @return anonymous column setted as integer use
  */
-struct column* VARCHAR(unsigned length);
+struct query_builder_column* VARCHAR(unsigned length);
 
 /**
  * create a column of type integer
  * @return anonymous column setted as integer use
  */
-struct column* INTEGER(void);
+struct query_builder_column* INTEGER(void);
 
 #endif

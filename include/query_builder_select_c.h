@@ -9,7 +9,7 @@
  * @param[out] table origin table
  * @return query
  */
-struct query* Select_table(struct table* table);
+struct query* Select_table(struct query_builder_table* table);
 
 /**
  * Prepare one query of type select

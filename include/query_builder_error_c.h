@@ -4,8 +4,10 @@
 #include <stdlib.h>
 
 enum query_builder_error_list {
-	INVALID_COLUMN_DEFINITION = -1,
-	IDENTIFIER_TRUNCATED = -2,
+	IDENTIFIER_TRUNCATED = -1,
+	INVALID_COLUMN_DEFINITION = -2,
+	INVALID_TABLE_DEFINITION = -3,
+	INVALID_CONSTRAINT_DEFINITION = -4,
 };
 
 struct query_builder_error {

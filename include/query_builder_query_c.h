@@ -20,7 +20,7 @@ enum query_type {
 struct query {
 	/*@{*/
 	enum query_type type; /**< type of operation */
-	struct table *from; /**< principal table */
+	struct query_builder_table *from; /**< principal table */
 	/*@}*/
 	/**
 	 * List of methos from query
@@ -39,6 +39,6 @@ struct query {
  * @param[in] table table to be referenced
  * @return a struct for build sql querys
  */
-struct query* Query(struct table* table);
+struct query* Query(struct query_builder_table* table);
 
 #endif

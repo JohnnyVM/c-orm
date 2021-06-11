@@ -18,6 +18,16 @@ const struct query_builder_error query_builder_error_list[] = {
 		.code_name = "Identifier truncated",
 		.code_string = "The identifier its bigger than " STRINGNIFY(MAX_IDENTIFIER_NAME_LENGTH) " characters",
 	},
+	(struct query_builder_error){
+		.code = INVALID_TABLE_DEFINITION,
+		.code_name = "Invalid table definition",
+		.code_string = "Invalid table definition",
+	},
+	(struct query_builder_error){
+		.code = INVALID_CONSTRAINT_DEFINITION,
+		.code_name = "Invalid constraint definition",
+		.code_string = "Invalid constraint definition",
+	},
 };
 
 static bool query_builder_error_code(enum query_builder_error_list errcode){
@@ -25,6 +35,8 @@ static bool query_builder_error_code(enum query_builder_error_list errcode){
 	switch(errcode) {
 		case IDENTIFIER_TRUNCATED:
 		case INVALID_COLUMN_DEFINITION:
+		case INVALID_TABLE_DEFINITION:
+		case INVALID_CONSTRAINT_DEFINITION:
 			is_query_builder_error_code = true;
 			break;
 	}

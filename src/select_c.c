@@ -34,7 +34,7 @@ struct query* Select_query(struct query* query)
  * @return Return a struct query prepared for select from the object table
  * output must be freed with Query_free
  */
-struct query* Select_table(struct table* table)
+struct query* Select_table(struct query_builder_table* table)
 {
 	struct logging *log;
 	if(table == NULL) {

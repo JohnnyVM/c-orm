@@ -9,7 +9,7 @@
 #include "query_builder_column_c.h"
 #include "query_builder_constraint_c.h"
 
-[[maybe_unused]]static struct constraint* constraint_copy(struct constraint* source)
+[[maybe_unused]]static struct query_builder_constraint* constraint_copy(struct query_builder_constraint* source)
 {
 	if(source == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
@@ -18,7 +18,7 @@
 		return NULL;
 	}
 
-	struct constraint* dest = log_malloc(sizeof *source);
+	struct query_builder_constraint* dest = log_malloc(sizeof *source);
 	if(dest == NULL) {
 		return NULL;
 	}
@@ -38,7 +38,10 @@
 	return dest;
 }
 
-void constraint_free(struct constraint* constraint)
+/**
+ * static function
+ */
+[[maybe_unused]]static void query_builder_constraint_free(struct query_builder_constraint* constraint)
 {
 	if(constraint == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
@@ -57,7 +60,7 @@ void constraint_free(struct constraint* constraint)
 	free(constraint);
 }
 
-[[maybe_unused]]static struct constraint* constraint_add_column(struct constraint* dest, struct column* column)
+[[maybe_unused]]static struct query_builder_constraint* constraint_add_column(struct query_builder_constraint* dest, struct query_builder_column* column)
 {
 	if(column == NULL || dest == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
@@ -67,7 +70,7 @@ void constraint_free(struct constraint* constraint)
 	}
 
 	++dest->n_columns;
-	void* tmp = log_realloc(dest->columns, dest->n_columns * sizeof(struct column*));
+	void* tmp = log_realloc(dest->columns, dest->n_columns * sizeof(struct query_builder_column*));
 	if(dest->columns == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", query_builder_strerror(errno));
