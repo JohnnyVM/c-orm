@@ -1,7 +1,6 @@
 #if !defined(LOGGING_H)
 #define LOGGING_H
 #include <stdarg.h>
-#include <syslog.h>
 
 #if !defined(DEFAULT_LOG_LEVEL)
 #define DEFAULT_LOG_LEVEL 0

@@ -1,0 +1,15 @@
+﻿  column_c.c
+C:\Users\Johnny\Documents\GitHub\c-orm\src\column_c.c(8,10): fatal error C1083: No se puede abrir el archivo incluir: 'logging_c.h': No such file or directory
+  common_c.c
+C:\Users\Johnny\Documents\GitHub\c-orm\src\common_c.c(5,10): fatal error C1083: No se puede abrir el archivo incluir: 'query_builder_common_c.h': No such file or directory
+  constraint_c.c
+C:\Users\Johnny\Documents\GitHub\c-orm\src\constraint_c.c(7,10): fatal error C1083: No se puede abrir el archivo incluir: 'logging_c.h': No such file or directory
+  error_c.c
+C:\Users\Johnny\Documents\GitHub\c-orm\src\error_c.c(7,10): fatal error C1083: No se puede abrir el archivo incluir: 'logging_c.h': No such file or directory
+  query_c.c
+C:\Users\Johnny\Documents\GitHub\c-orm\src\query_c.c(7,10): fatal error C1083: No se puede abrir el archivo incluir: 'logging_c.h': No such file or directory
+  select_c.c
+C:\Users\Johnny\Documents\GitHub\c-orm\src\select_c.c(7,10): fatal error C1083: No se puede abrir el archivo incluir: 'logging_c.h': No such file or directory
+  table_c.c
+C:\Users\Johnny\Documents\GitHub\c-orm\src\table_c.c(7,10): fatal error C1083: No se puede abrir el archivo incluir: 'logging_c.h': No such file or directory
+  Generando código...
