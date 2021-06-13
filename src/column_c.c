@@ -107,7 +107,7 @@ struct query_builder_column* query_builder_column(char* name, struct query_build
 	if(column->constraints == NULL && n_args > 0) {
 		column->free(column);
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "%s", query_builder_strerror(ENOMEM));
+		log->error(log, "%s", strerror(ENOMEM));
 		return NULL;
 	}
 
@@ -137,7 +137,7 @@ struct query_builder_column* VARCHAR(unsigned length)
 	struct query_builder_column* column = log_malloc(sizeof *column + length);
 	if(column == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "%s", query_builder_strerror(errno));
+		log->error(log, "%s", strerror(ENOMEM));
 		return NULL;
 	}
 

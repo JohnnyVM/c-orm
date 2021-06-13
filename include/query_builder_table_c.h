@@ -29,23 +29,19 @@ unsigned va_list_query_builder_table_property(struct query_builder_table_propert
 struct query_builder_table {
 	/*@{*/
 	char name[MAX_IDENTIFIER_NAME_LENGTH]; /**< Name of the table represented */
-	struct query_builder_column* columns; /**< column list */
+	struct query_builder_column** columns; /**< column list */
 	unsigned n_columns; /**< number of columns */
-	struct query_builder_constraint* constraints; /**< constraint list */
+	struct query_builder_constraint** constraints; /**< constraint list */
 	unsigned n_constraints; /**< number of constraints */
 	/*@}*/
 	/** List of methods for table */
 	/*@{*/
 	struct query_builder_table* (*copy)(struct query_builder_table*); /**< \todo methods copy */
 	void (*free)(struct query_builder_table*); /**< method free */
-	void (*add_constraint)(struct query_builder_table*); /**< method add constraint */
-	void (*add_column)(struct query_builder_table*); /**< method add column */
+	/** add constraint to table */
+	struct query_builder_table* (*add)(struct query_builder_table*, struct query_builder_table_property*);
 	/*@}*/
 };
-
-/**
- * Add column to table
- */
 
 /**
  * Prepare a table of \p name with the columns added as args

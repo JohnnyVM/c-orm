@@ -92,15 +92,22 @@ static struct query_builder_table* table_copy(struct query_builder_table* orig)
 
 /**
  * Wrapper for column function
- * Must be called as Column
+ * Can be called with the macro Column
  * This function its a wrapper for add idiomatic form to declare Columns and constraints
  * \todo really i dont like this solution, but i dont have nothing better
+ * \code
  * Table('table_name', Column(...))
+ * \endcode
+ * \param name of the column
+ * \param empy column from type column builder as VARCHAR
+ * \param n_args number of constraints passed
+ * \param ... list of constraints and columns passeds
  */
-struct query_builder_table_property* query_builder_table_column(char* name,
-																struct query_builder_column* col,
-																unsigned n_args,
-																...)
+struct query_builder_table_property* query_builder_table_column(
+		char* name,
+		struct query_builder_column* col,
+		unsigned n_args,
+		...)
 {
 	struct logging *log;
 	if(name == NULL || col == NULL) {
@@ -114,7 +121,7 @@ struct query_builder_table_property* query_builder_table_column(char* name,
 	if(dest == NULL) {
 		col->free(col);
 		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "%s", query_builder_strerror(errno));
+		log->error(log, "%s", strerror(ENOMEM));
 		return NULL;
 	}
 
@@ -143,16 +150,107 @@ static void query_builder_table_free(struct query_builder_table* table)
 	}
 
 	for(unsigned i = 0; i < table->n_columns; i++) {
-		table->columns[i].free(&table->columns[i]);
+		table->columns[i]->free(table->columns[i]);
 	}
+	free(table->columns);
 
 	for(unsigned i = 0; i < table->n_constraints; i++) {
-		table->constraints[i].free(&table->constraints[i]);
+		table->constraints[i]->free(table->constraints[i]);
 	}
+	free(table->constraints);
 
 	free(table);
 }
 
+/**
+ *	Add \p column to \p table
+ *	\param table table
+ *	\param property property that will be added
+ *	\return pointer to query builder table or null if error
+ */
+struct query_builder_table* query_builder_table_add_column(
+		struct query_builder_table* table,
+		struct query_builder_column* column)
+{
+	if(table == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", strerror(EINVAL));
+		return NULL;
+	}
+
+	void* tmp = log_realloc(table->columns, (table->n_columns+1) * sizeof *table->columns);
+	if(tmp == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", strerror(ENOMEM));
+		return NULL;
+	}
+	table->columns = tmp;
+	table->columns[table->n_columns] = column;
+	table->n_columns++;
+
+	/** \todo check constraints have sense, no multiple primary keys, etc */
+
+	return table;
+}
+
+/**
+ *	Add \p constraint to \p table
+ *	\param table table
+ *	\param property property that will be added
+ *	\return pointer to query builder table or null if error
+ */
+struct query_builder_table* query_builder_table_add_constraint(
+		struct query_builder_table* table,
+		struct query_builder_constraint* constraint)
+{
+	if(table == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", strerror(EINVAL));
+		return NULL;
+	}
+
+	void* tmp = log_realloc(table->constraints, (table->n_constraints+1) * sizeof *table->constraints);
+	if(tmp == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", strerror(ENOMEM));
+		return NULL;
+	}
+	table->constraints = tmp;
+	table->constraints[table->n_constraints] = constraint;
+	table->n_constraints++;
+
+	return table;
+}
+
+/**
+ *	Add \p property to \p table
+ *	\param table table
+ *	\param property property that will be added
+ *	\return pointer to query builder table or null if error
+ */
+struct query_builder_table* query_builder_table_add_property(
+		struct query_builder_table* table,
+		struct query_builder_table_property* property)
+{
+	if(table == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", strerror(EINVAL));
+		return NULL;
+	}
+
+	switch(property->type) {
+		case table_property_column:
+			table = query_builder_table_add_column(table, property->value);
+			break;
+
+		case table_property_constraint:
+			table = query_builder_table_add_constraint(table, property->value);
+			break;
+	}
+	/* Clean the container not the property */
+	free(property);
+	return table;
+}
 
 /**
  *	Return a query_builder_table
@@ -190,15 +288,7 @@ struct query_builder_table* query_builder_table(char* name, unsigned n_args, ...
 	va_start(property_list, n_args);
 	for(unsigned n_properties = 0; n_properties < n_args; n_properties++) {
 		property = va_arg(property_list, struct query_builder_table_property*);
-		switch(property->type) {
-			case table_property_column:
-				///todo table column
-				break;
-
-			case table_property_constraint:
-				///todo constraint
-				break;
-		}
+		query_builder_table_add_property(table, property);
 	}
 	va_end(property_list);
 
@@ -213,6 +303,7 @@ struct query_builder_table* query_builder_table(char* name, unsigned n_args, ...
 	/* Asign list of methods */
 	table->copy = &table_copy;
 	table->free = &query_builder_table_free;
+	table->add = &query_builder_table_add_property;
 
 	return table;
 }
