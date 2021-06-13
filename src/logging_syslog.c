@@ -1,3 +1,4 @@
+/** \file logging_syslog.c */
 #include <unistd.h>
 #include <stdarg.h>
 #include <syslog.h>

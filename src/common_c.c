@@ -1,3 +1,4 @@
+/** \file common_c.c */
 #include <stdarg.h>
 #include <stddef.h>
 
