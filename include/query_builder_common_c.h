@@ -41,10 +41,11 @@ struct query_builder_table_property;
 
 #define va_list_count(...) va_list_count_expanded(__VA_ARGS__ __VA_OPT__(,) NULL)
 
-#define va_list_count_expanded(X, ...) _Generic((X), \
+#define va_list_count_expanded(X, ...) \
+	_Generic(X, \
 		enum constraint_type (*)(void): va_list_constraint_type, \
 		struct query_builder_table_property* : va_list_query_builder_table_property, \
 		void* : va_list_void \
-)(X __VA_OPT__(,) __VA_ARGS__ )
+	)(X __VA_OPT__(,) __VA_ARGS__ )
 
 #endif

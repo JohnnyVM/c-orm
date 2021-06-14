@@ -20,6 +20,6 @@ TEST_C(table, create_free)
 	struct query_builder_table_property* property = Column("column", VARCHAR(1), primary_key);
 	struct query_builder_table* table = Table("table", property);
 	table->free(table);
-	//table = Table("table", Column("column", INTEGER(), primary_key));
-	//table->free(table);
+	table = Table("table", Column("column", INTEGER(), primary_key));
+	table->free(table);
 }

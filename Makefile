@@ -35,15 +35,15 @@ export
 
 .PHONY: clean tests coverage library
 
+lib/libcorm.a: ${OBJECTS} | lib
+	ar -rc lib/libcorm.a $^
+
 ${OBJECTS}: %.o: %.c
 	${CC} -Werror ${CFLAGS} -MMD -c $< -o $@
 
 tests: ${OBJECTS}
 	${MAKE} -C tests tests
 	LSAN_OPTIONS=log_threads=1 ./tests/tests
-
-library: ${OBJECTS} | lib
-	ar -rc lib/libcorm.a $^
 
 lib:
 	mkdir lib
