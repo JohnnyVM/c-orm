@@ -19,11 +19,6 @@ struct query_builder_table_property {
 };
 
 /**
- * Count the list of argument for query_builder_table
- */
-unsigned va_list_query_builder_table_property(struct query_builder_table_property* init, ...);
-
-/**
  * A structure that store the information of a table of the database
  */
 struct query_builder_table {
@@ -44,20 +39,27 @@ struct query_builder_table {
 };
 
 /**
- * Prepare a table of \p name with the columns added as args
- *
+ * \brief count number of arguments passed to query_builder_table
+ */
+unsigned va_list_query_builder_table_property(struct query_builder_table_property* init, ...);
+
+/**
+ * Prepare a table of \p name with the properties added as args
+ * as in the version of common the ending null is optional but the diference with Column
+ * is that column had been evaluated twice if would be use the macro for expand as in Column
+ * the arguments of query_builder_table can be
  * sqlalchemy add a metadata arguments. probably i should too
  * @param[in] name name of the table
  * @param[in] n_args number of arguments
  * @param[in] ... origin list of table properties
  * @return table
  */
-struct query_builder_table* query_builder_table(char* name, unsigned n_args, ...);
+struct query_builder_table* query_builder_table(char* name, ...);
 #define Table(ARG_NAME, ...) \
-	query_builder_table(ARG_NAME, va_list_count(__VA_ARGS__), __VA_ARGS__)
+	query_builder_table(ARG_NAME, __VA_ARGS__ __VA_OPT__(,) NULL)
 
 struct query_builder_table_property* query_builder_table_column(char* name, struct query_builder_column* col, unsigned n_args, ...);
 #define Column(ARG_NAME, ARG_COL, ...) \
-	query_builder_table_column(ARG_NAME, ARG_COL, va_list_count(__VA_ARGS__), __VA_ARGS__)
+	query_builder_table_column(ARG_NAME, ARG_COL, va_list_query_builder_constraint_type(__VA_ARGS__ __VA_OPT__(,) NULL), __VA_ARGS__)
 
 #endif

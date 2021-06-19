@@ -18,7 +18,7 @@ struct query* Select_table(struct query_builder_table* table);
  */
 struct query* Select_query(struct query* query);
 #define Select(X) _Generic((X), \
-	struct table*: Select_table \
+	struct query_builder_table*: Select_table \
 	struct query*: Select_query \
 )(X)
 

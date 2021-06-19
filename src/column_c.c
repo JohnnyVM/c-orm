@@ -26,8 +26,8 @@ static void column_free(struct query_builder_column* orig)
 	if(orig->n_constraints > 0 ) { free(orig->constraints); }
 
 	switch(orig->type) {
-		case query_builder_VARCHAR:
-		case query_builder_INTEGER:
+		case query_builder_column_VARCHAR:
+		case query_builder_column_INTEGER:
 			column_free_tailed(orig);
 		break;
 	}
@@ -62,8 +62,8 @@ static struct query_builder_column* column_copy(struct query_builder_column* ori
 
 	struct query_builder_column* dest = NULL;
 	switch(orig->type) {
-		case query_builder_VARCHAR:
-		case query_builder_INTEGER:
+		case query_builder_column_VARCHAR:
+		case query_builder_column_INTEGER:
 			dest = column_copy_tailed(orig);
 			break;
 	}
@@ -141,7 +141,7 @@ struct query_builder_column* VARCHAR(unsigned length)
 		return NULL;
 	}
 
-	column->type = query_builder_VARCHAR;
+	column->type = query_builder_column_VARCHAR;
 	column->octet_length = (int)length;
 	column->data = (void*)((uintptr_t)column + sizeof *column);
 
@@ -161,7 +161,7 @@ struct query_builder_column* INTEGER(void)
 		return NULL;
 	}
 
-	column->type = query_builder_INTEGER;
+	column->type = query_builder_column_INTEGER;
 	column->octet_length = sizeof(intmax_t);
 	column->data = (void*)((uintptr_t)column + sizeof *column);
 

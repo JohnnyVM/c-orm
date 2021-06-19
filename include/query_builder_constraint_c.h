@@ -5,7 +5,7 @@
 
 struct query_builder_constraint {
 	/*@{*/
-	enum constraint_type type;
+	enum query_builder_constraint_type type;
 	char name[MAX_IDENTIFIER_NAME_LENGTH];
 	struct query_builder_column** columns; /**< list of pointers to affected columns, readonly */
 	unsigned n_columns; /**< number of columns affected, readonly */
@@ -18,10 +18,12 @@ struct query_builder_constraint {
 	/*@}*/
 };
 
+unsigned va_list_query_builder_constraint_type(enum query_builder_constraint_type (*init)(void), ...);
+
 /**
  * List of functions
  */
-enum constraint_type primary_key(void);
-enum constraint_type not_null(void);
-enum constraint_type is_index(void);
+enum query_builder_constraint_type primary_key(void);
+enum query_builder_constraint_type not_null(void);
+enum query_builder_constraint_type is_index(void);
 #endif

@@ -18,34 +18,14 @@ enum driver_type {
 	ANSI,
 };
 
-/**
- * Wrapper for va_args lists
- * this allow distinc NULL fom error
- */
-struct va_arg_wrap {
-	bool error;
-	void* payload;
-};
-
-enum constraint_type {
-	constraint_index,
-	constraint_not_null,
-	constraint_primary_key,
-	constraint_default,
+enum query_builder_constraint_type {
+	query_builder_constraint_index,
+	query_builder_constraint_not_null,
+	query_builder_constraint_primary_key,
+	query_builder_constraint_default_value,
 };
 
 /** Count number of va_args ending in 0 or NULL */
 unsigned va_list_void(void* init, ...);
-extern unsigned va_list_constraint_type(enum constraint_type (*init)(void), ...);
-struct query_builder_table_property;
-
-#define va_list_count(...) va_list_count_expanded(__VA_ARGS__ __VA_OPT__(,) NULL)
-
-#define va_list_count_expanded(X, ...) \
-	_Generic(X, \
-		enum constraint_type (*)(void): va_list_constraint_type, \
-		struct query_builder_table_property* : va_list_query_builder_table_property, \
-		void* : va_list_void \
-	)(X __VA_OPT__(,) __VA_ARGS__ )
 
 #endif

@@ -4,11 +4,10 @@
 #include <stdarg.h>
 
 #include "query_builder_common_c.h"
-#include "query_builder_constraint_c.h"
 
 enum column_type  {
-	query_builder_VARCHAR,
-	query_builder_INTEGER,
+	query_builder_column_VARCHAR,
+	query_builder_column_INTEGER,
 };
 
 /**
@@ -24,9 +23,7 @@ struct query_builder_column {
 	enum constraint_type (**constraints)(void); /**< pointer to funtions */
 	unsigned n_constraints;
 	/*@}*/
-	/**
-	 * List of methos from query
-	 */
+	/** List of methos from query */
 	/*@{*/
 	struct query_builder_column* (*copy)(struct query_builder_column*); /** copy method */
 	void (*free)(struct query_builder_column*); /**< free method */

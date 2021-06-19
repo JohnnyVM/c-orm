@@ -1,4 +1,6 @@
-/** @file table_c.c */
+/** @file table_c.c
+ *	\brief table functions, contain wrappers to other functions
+ */
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -10,22 +12,10 @@
 #include "query_builder_table_c.h"
 #include "query_builder_constraint_c.h"
 
+/**
+ * \brief count number of parameters
+ */
 unsigned va_list_query_builder_table_property(struct query_builder_table_property* init, ...)
-{
-	unsigned i = 0;
-	va_list counter_list;
-
-	va_start(counter_list, init);
-	while(init != NULL) {
-		++i;
-		init = va_arg(counter_list, void*);
-	}
-	va_end(counter_list);
-
-	return i;
-}
-
-unsigned va_list_constraint_type(enum constraint_type (*init)(void), ...)
 {
 	unsigned i = 0;
 	va_list counter_list;
@@ -262,7 +252,7 @@ struct query_builder_table* query_builder_table_add_property(
  *	\param[in] n_args number of arguments
  *	\param ... List of table properties columnas and constraints
  */
-struct query_builder_table* query_builder_table(char* name, unsigned n_args, ...)
+struct query_builder_table* query_builder_table(char* name, ...)
 {
 	if(name == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
@@ -277,6 +267,14 @@ struct query_builder_table* query_builder_table(char* name, unsigned n_args, ...
 		return NULL;
 	}
 
+	int len = snprintf(table->name, MAX_IDENTIFIER_NAME_LENGTH, "%s", name);
+	if(len < 0 || len >= MAX_IDENTIFIER_NAME_LENGTH) {
+		struct logging* log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "Table name %s truncated as %s", name, table->name);
+		free(table);
+		return NULL;
+	}
+
 	table->columns = NULL;
 	table->n_columns = 0;
 	table->constraints = NULL;
@@ -285,20 +283,17 @@ struct query_builder_table* query_builder_table(char* name, unsigned n_args, ...
 	/** iterate over la list of constraints passed to the function */
 	va_list property_list;
 	struct query_builder_table_property* property;
-	va_start(property_list, n_args);
-	for(unsigned n_properties = 0; n_properties < n_args; n_properties++) {
-		property = va_arg(property_list, struct query_builder_table_property*);
-		query_builder_table_add_property(table, property);
+	va_start(property_list, name);
+	while( (property = va_arg(property_list, struct query_builder_table_property*)) ) {
+		if(!query_builder_table_add_property(table, property)) {
+			struct logging* log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+			log->error(log, "%s", query_builder_strerror(errno));
+			query_builder_table_free(table);
+			return NULL;
+			
+		}
 	}
 	va_end(property_list);
-
-	int len = snprintf(table->name, MAX_IDENTIFIER_NAME_LENGTH, "%s", name);
-	if(len < 0 || len >= MAX_IDENTIFIER_NAME_LENGTH) {
-		struct logging* log = get_logger(QUERY_BUILDER_LOGGER_NAME);
-		log->error(log, "Table name %s truncated as %s", name, table->name);
-		free(table);
-		return NULL;
-	}
 
 	/* Asign list of methods */
 	table->copy = &table_copy;
