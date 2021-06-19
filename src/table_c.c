@@ -13,24 +13,6 @@
 #include "query_builder_constraint_c.h"
 
 /**
- * \brief count number of parameters
- */
-unsigned va_list_query_builder_table_property(struct query_builder_table_property* init, ...)
-{
-	unsigned i = 0;
-	va_list counter_list;
-
-	va_start(counter_list, init);
-	while(init != NULL) {
-		++i;
-		init = va_arg(counter_list, void*);
-	}
-	va_end(counter_list);
-
-	return i;
-}
-
-/**
  * Clean the table property that arrive from query_builder_table declaration
  */
 void query_builder_table_property_free(struct query_builder_table_property* property)

@@ -52,9 +52,8 @@ static struct query_builder_column* column_copy_tailed(struct query_builder_colu
 
 static struct query_builder_column* column_copy(struct query_builder_column* orig)
 {
-	struct logging *log;
 	if(orig == NULL) {
-		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(EINVAL));
 		errno = EINVAL;
 		return NULL;
@@ -68,7 +67,7 @@ static struct query_builder_column* column_copy(struct query_builder_column* ori
 			break;
 	}
 	if(dest == NULL) {
-		log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", query_builder_strerror(errno));
 		return NULL;
 	}
@@ -77,7 +76,7 @@ static struct query_builder_column* column_copy(struct query_builder_column* ori
 		enum constraint_type (**constraint_list)(void) = \
 				log_malloc(orig->n_constraints * sizeof *constraint_list);
 		if(orig->n_constraints > 0 && constraint_list == NULL) {
-			log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+			struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 			log->error(log, "%s", query_builder_strerror(errno));
 			return NULL;
 		}

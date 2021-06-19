@@ -22,4 +22,10 @@ TEST_C(table, create_free)
 	table->free(table);
 	table = Table("table", Column("column", INTEGER(), primary_key));
 	table->free(table);
+	table = Table("table",
+				Column("column", INTEGER(), primary_key),
+				Column("column", VARCHAR(125)),
+				Column("column", VARCHAR(125))
+			);
+	table->free(table);
 }
