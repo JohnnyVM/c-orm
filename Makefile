@@ -51,5 +51,5 @@ lib:
 -include $(DEPENDENCIES)
 
 clean:
-	rm -rf ${OBJECTS} ${DEPENDENCIES} lib
+	-rm -rf ${OBJECTS} ${DEPENDENCIES} lib
 	-$(MAKE) -C tests clean
