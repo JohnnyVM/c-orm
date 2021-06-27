@@ -17,6 +17,13 @@ TEST_GROUP_C_WRAPPER(table)
 };
 TEST_C_WRAPPER(table, create_free);
 
+TEST_GROUP_C_WRAPPER(compile)
+{
+    TEST_GROUP_C_SETUP_WRAPPER(compile); /** optional */
+    TEST_GROUP_C_TEARDOWN_WRAPPER(compile); /** optional */
+};
+TEST_C_WRAPPER(compile, select);
+
 int main(int ac, char** av)
 {
     return CommandLineTestRunner::RunAllTests(ac, av);

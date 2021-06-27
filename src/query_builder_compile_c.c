@@ -8,6 +8,17 @@
 #include "query_builder_error_c.h"
 #include "query_builder_c.h"
 
+#if defined(__clang__)
+#if __has_warning("-Wformat-nonliteral")
+#  pragma clang diagnostic ignored "-Wformat-nonliteral"
+#endif
+#endif
+
+#if defined(__GNUC__) && (__GNUC__ >= 7)
+#  pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif
+
+
 static size_t chunk_size = 1024;
 
 static int get_columns(struct query_builder_table* table, char** column_string, int *len) {
@@ -90,7 +101,9 @@ static char* query_builder_compile_select(struct query_builder* query) {
 		return NULL;
 	}
 
-	output_len = snprintf(NULL, 0, "SELECT %.*s FROM %s",
+	const char* format = "SELECT %.*s FROM %s";
+
+	output_len = snprintf(NULL, 0, format,
 			columns_len,
 			query_columns,
 			query->table->name);
@@ -101,33 +114,42 @@ static char* query_builder_compile_select(struct query_builder* query) {
 		log->error(log, "%s", strerror(ENOMEM));
 		return NULL;
 	}
-	output_len = snprintf(query_string, (size_t)output_len, "SELECT %.*s FROM %s",
+	output_len = snprintf(query_string, (size_t)output_len, format,
 			columns_len,
 			query_columns,
 			query->table->name);
+	free(query_columns);
 
 	return query_string;
 }
 
 static char* query_builder_compile_update(struct query_builder* query) {
-	char* query_string;
+	int output_len;
+	char *query_string;
 	if(!query || !query->table || query->type != query_builder_type_update) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(EINVAL));
 		return NULL;
 	}
 
-	query_string = log_malloc(chunk_size);
+	const char* format = "UPDATE %s SET";
+
+	output_len = snprintf(NULL, 0, format,
+			query->table->name);
+	query_string = log_malloc((size_t)output_len+1);
 	if(!query_string) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(ENOMEM));
 		return NULL;
 	}
+	output_len = snprintf(query_string, (size_t)output_len, format,
+			query->table->name);
 
-	return NULL;
+	return query_string;
 }
 
 static char* query_builder_compile_delete(struct query_builder* query) {
+	int output_len;
 	char* query_string;
 	if(!query || !query->table || query->type != query_builder_type_delete) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
@@ -135,30 +157,43 @@ static char* query_builder_compile_delete(struct query_builder* query) {
 		return NULL;
 	}
 
-	query_string = log_malloc(chunk_size);
+	const char* format = "DELETE FROM %s";
+
+	output_len = snprintf(NULL, 0, format,
+			query->table->name);
+	query_string = log_malloc((size_t)output_len+1);
 	if(!query_string) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(ENOMEM));
 		return NULL;
 	}
+	output_len = snprintf(query_string, (size_t)output_len, format,
+			query->table->name);
 
 	return query_string;
 }
 
 static char* query_builder_compile_insert(struct query_builder* query) {
+	int output_len;
 	char* query_string;
-	if(!query || !query->table || query->type != query_builder_type_insert) {
+	if(!query || !query->table || query->type != query_builder_type_delete) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(EINVAL));
 		return NULL;
 	}
 
-	query_string = log_malloc(chunk_size);
+	const char* format = "INERT INTO %s VALUES";
+
+	output_len = snprintf(NULL, 0, format,
+			query->table->name);
+	query_string = log_malloc((size_t)output_len+1);
 	if(!query_string) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(ENOMEM));
 		return NULL;
 	}
+	output_len = snprintf(query_string, (size_t)output_len, format,
+			query->table->name);
 
 	return query_string;
 }

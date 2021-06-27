@@ -26,7 +26,7 @@ DEPENDENCIES := $(patsubst %.c,%.d,${SOURCES})
 INCLUDE_FLAGS := -I./include
 WARNING_FLAGS := -Wextra -Wall -Wshadow -Wdouble-promotion \
 				-Wformat=2 -fno-common -Wconversion -Wundef
-ifneq (${CC}, cc)
+ifneq (${CC}, clang)
 WARNING_FLAGS += -Wformat-truncation -fanalyzer
 endif
 

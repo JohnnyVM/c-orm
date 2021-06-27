@@ -13,9 +13,22 @@ enum query_builder_type {
 	query_builder_type_insert,
 };
 
+/**
+ * A structure that store the information of a query
+ */
 struct query_builder{
+	/*@{*/
 	enum query_builder_type type;
 	struct query_builder_table* table;
+	/*@}*/
+	/** List of methods for query */
+	/*@{*/
+	struct query_builder* (*select)(struct query_builder_table* table);
+	struct query_builder* (*insert)(struct query_builder_table* table);
+	struct query_builder* (*update)(struct query_builder_table* table);
+	struct query_builder* (*delete)(struct query_builder_table* table);
+	char* (*compile)(struct query_builder* query);
+	/*@}*/
 };
 
 struct query_builder* query_builder_select(struct query_builder_table* table);
@@ -32,5 +45,17 @@ struct query_builder* query_builder_delete(struct query_builder_table* table);
  * \return SQL statement, NULL if error
  * */
 char* query_builder_compile(struct query_builder* query);
+
+#define INIT_QUERY \
+	{ \
+		.query_builder_type = query_builder_type_not_selected, \
+		.select = &query_builder_select, \
+		.update = &query_builder_update, \
+		.delete = &query_builder_delete, \
+		.insert = &query_builder_insert, \
+	}
+
+struct query_builder* query_builder(struct query_builder_table* table);
+#define Query query_builder
 
 #endif
