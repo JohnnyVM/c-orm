@@ -101,6 +101,7 @@ struct query_builder* query_builder(struct query_builder_table* table)
 	query->update = &query_builder_update;
 	query->delete = &query_builder_delete;
 	query->insert = &query_builder_insert;
+	query->compile = &query_builder_compile;
 
 	query->table = NULL;
 	if(table) { query->table = table; }

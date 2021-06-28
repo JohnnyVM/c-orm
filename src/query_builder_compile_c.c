@@ -107,17 +107,21 @@ static char* query_builder_compile_select(struct query_builder* query) {
 			columns_len,
 			query_columns,
 			query->table->name);
-	query_string = log_malloc((size_t)output_len+1);
+	output_len++;
+
+	query_string = log_malloc((size_t)output_len);
 	if(!query_string) {
 		free(query_columns);
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(ENOMEM));
 		return NULL;
 	}
+
 	output_len = snprintf(query_string, (size_t)output_len, format,
 			columns_len,
 			query_columns,
 			query->table->name);
+
 	free(query_columns);
 
 	return query_string;
@@ -182,7 +186,7 @@ static char* query_builder_compile_insert(struct query_builder* query) {
 		return NULL;
 	}
 
-	const char* format = "INERT INTO %s VALUES";
+	const char* format = "INSERT INTO %s VALUES";
 
 	output_len = snprintf(NULL, 0, format,
 			query->table->name);

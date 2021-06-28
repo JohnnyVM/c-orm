@@ -49,6 +49,7 @@ char* query_builder_compile(struct query_builder* query);
 #define INIT_QUERY \
 	{ \
 		.query_builder_type = query_builder_type_not_selected, \
+		.compile = &query_builder, \
 		.select = &query_builder_select, \
 		.update = &query_builder_update, \
 		.delete = &query_builder_delete, \

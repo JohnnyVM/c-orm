@@ -24,13 +24,17 @@ TEST_C(compile, select)
 			);
 
 	struct query_builder* query = Query(NULL);
-	char* query_string = query->compile(Select(table));
-	
+	struct query_builder* select = Select(table);
+
+	char* query_string = query->compile(select);
+
 	CHECK_EQUAL_C_STRING_TEXT(
 			query_string,
 			"SELECT table.column,table.column,table.column FROM table",
 			query_string);
 
 	free(query_string);
+	free(query);
+	free(select);
 	table->free(table);
 }
