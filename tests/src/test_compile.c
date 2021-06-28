@@ -34,7 +34,7 @@ TEST_C(compile, select)
 			query_string);
 
 	free(query_string);
-	free(query);
-	free(select);
+	query->free(query);
+	select->free(select);
 	table->free(table);
 }

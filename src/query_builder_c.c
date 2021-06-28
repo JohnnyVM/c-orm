@@ -87,6 +87,11 @@ struct query_builder* query_builder_insert(struct query_builder_table* table)
 	return query;
 }
 
+void query_builder_free(struct query_builder* query)
+{
+	free(query);
+}
+
 struct query_builder* query_builder(struct query_builder_table* table)
 {
 	struct query_builder* query = log_malloc(sizeof *query);
@@ -102,6 +107,7 @@ struct query_builder* query_builder(struct query_builder_table* table)
 	query->delete = &query_builder_delete;
 	query->insert = &query_builder_insert;
 	query->compile = &query_builder_compile;
+	query->free = &query_builder_free;
 
 	query->table = NULL;
 	if(table) { query->table = table; }

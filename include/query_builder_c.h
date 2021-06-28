@@ -28,6 +28,7 @@ struct query_builder{
 	struct query_builder* (*update)(struct query_builder_table* table);
 	struct query_builder* (*delete)(struct query_builder_table* table);
 	char* (*compile)(struct query_builder* query);
+	void (*free)(struct query_builder* query);
 	/*@}*/
 };
 
@@ -50,6 +51,7 @@ char* query_builder_compile(struct query_builder* query);
 	{ \
 		.query_builder_type = query_builder_type_not_selected, \
 		.compile = &query_builder, \
+		.free = &query_builder_free, \
 		.select = &query_builder_select, \
 		.update = &query_builder_update, \
 		.delete = &query_builder_delete, \
