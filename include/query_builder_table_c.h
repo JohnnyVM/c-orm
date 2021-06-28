@@ -6,14 +6,15 @@
 #include "query_builder_constraint_c.h"
 
 /* Motto: all problems in programming science can be solved adding a level of indirection*/
-enum table_property_type {
-	table_property_column,
-	table_property_constraint,
+enum query_builder_table_property_type {
+	query_builder_table_property_column,
+	query_builder_table_property_constraint,
+	query_builder_table_property_schema,
 };
 
 /** Generic table struct for hold table properties */
 struct query_builder_table_property {
-	enum table_property_type type;
+	enum query_builder_table_property_type type;
 	void* value;
 	void (*free)(struct query_builder_table_property* property); /**< free method, mostly a helper */
 };
@@ -28,6 +29,7 @@ struct query_builder_table {
 	unsigned n_columns; /**< number of columns */
 	struct query_builder_constraint** constraints; /**< constraint list */
 	unsigned n_constraints; /**< number of constraints */
+	char schema[MAX_IDENTIFIER_NAME_LENGTH];
 	/*@}*/
 	/** List of methods for table */
 	/*@{*/

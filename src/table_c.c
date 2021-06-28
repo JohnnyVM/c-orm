@@ -27,12 +27,17 @@ void query_builder_table_property_free(struct query_builder_table_property* prop
 	struct query_builder_constraint* constraint;
 	struct query_builder_column* col;
 	switch(property->type) {
-		case table_property_column:
+		case query_builder_table_property_column:
 			col = property->value;
 			col->free(col);
 			break;
 
-		case table_property_constraint:
+		case query_builder_table_property_constraint:
+			constraint = property->value;
+			constraint->free(constraint);
+			break;
+
+		case query_builder_table_property_schema:
 			constraint = property->value;
 			constraint->free(constraint);
 			break;
@@ -194,6 +199,27 @@ struct query_builder_table* query_builder_table_add_constraint(
 	return table;
 }
 
+struct query_builder_table* query_builder_table_add_schema(
+		struct query_builder_table *table,
+		char* schema_name)
+{
+	int len;
+	if(table == NULL) {
+		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "%s", strerror(EINVAL));
+		return NULL;
+	}
+
+	snprintf(table->schema, MAX_IDENTIFIER_NAME_LENGTH, "%s", schema_name);
+	if(len < 0 || len >= MAX_IDENTIFIER_NAME_LENGTH) {
+		struct logging* log = get_logger(QUERY_BUILDER_LOGGER_NAME);
+		log->error(log, "Table schema name %s truncated as %s", schema_name, table->schema);
+		return NULL;
+	}
+
+	return table;
+}
+
 /**
  *	Add \p property to \p table
  *	\param table table
@@ -211,12 +237,16 @@ struct query_builder_table* query_builder_table_add_property(
 	}
 
 	switch(property->type) {
-		case table_property_column:
+		case query_builder_table_property_column:
 			table = query_builder_table_add_column(table, property->value);
 			break;
 
-		case table_property_constraint:
+		case query_builder_table_property_constraint:
 			table = query_builder_table_add_constraint(table, property->value);
+			break;
+
+		case query_builder_table_property_schema:
+			table = query_builder_table_add_schema(table, property->value);
 			break;
 	}
 	/* Clean the container not the property */
@@ -272,7 +302,6 @@ struct query_builder_table* query_builder_table(char* name, ...)
 			log->error(log, "%s", query_builder_strerror(errno));
 			query_builder_table_free(table);
 			return NULL;
-			
 		}
 	}
 	va_end(property_list);
