@@ -1,105 +1,64 @@
-#if !defined(QUERY_BUILDER_H)
-#define QUERY_BUILDER_H
+#if !defined(QUERY_BUILDER_C_H)
+#define QUERY_BUILDER_C_H
 
-#include <stdio.h>
-#include <stdint.h>
-#include <errno.h>
+#include "query_builder_common_c.h"
+#include "query_builder_column_c.h"
+#include "query_builder_table_c.h"
 
-/**
- * enum with the list of driver supported
- */
-enum driver_type {
-	none,
+enum query_builder_type {
+	query_builder_type_not_selected,
+	query_builder_type_select,
+	query_builder_type_update,
+	query_builder_type_delete,
+	query_builder_type_insert,
 };
 
 /**
- * A enum with the posible type of querys
+ * A structure that store the information of a query
  */
-enum query_type {
-	query_type_select, /**< select */
-	query_type_insert, /**< insert */
-	query_type_update, /**< update */
-	query_type_delete, /**< delete */
+struct query_builder{
+	/*@{*/
+	enum query_builder_type type;
+	struct query_builder_table* table;
+	/*@}*/
+	/** List of methods for query */
+	/*@{*/
+	struct query_builder* (*select)(struct query_builder_table* table);
+	struct query_builder* (*insert)(struct query_builder_table* table);
+	struct query_builder* (*update)(struct query_builder_table* table);
+	struct query_builder* (*delete)(struct query_builder_table* table);
+	char* (*compile)(struct query_builder* query);
+	void (*free)(struct query_builder* query);
+	/*@}*/
 };
 
-/**
- * A structure that store the column information
- */
-struct column {
-	int type; /**< numeric code of the data type of the column */
-	char* name; /**< name of the column */
-	int octet_length; /**< length of the character representation of the datum in bytes */
-	int indicator; /**< the indicator (indicating a null value or a value truncation) */
-	void* data; /**< actual data item (therefore, the data type of this field depends on the query) */
-};
+struct query_builder* query_builder_select(struct query_builder_table* table);
+#define Select query_builder_select
+
+struct query_builder* query_builder_update(struct query_builder_table* table);
+#define Update query_builder_update
+
+struct query_builder* query_builder_delete(struct query_builder_table* table);
+#define Delete query_builder_delete
 
 /**
- * A structure that store the information necesary for build a query
- */
-struct query {
-	enum query_type type;
-	struct query* (*values)(struct query*, char*, void*); // not used
-};
+ * Transform the query structure in SQL statement
+ * \return SQL statement, NULL if error
+ * */
+char* query_builder_compile(struct query_builder* query);
 
-/**
- * A structure that store the information of a table of the database
- */
-struct table {
-	char* table_name; /**< Name of the table represented */
-};
+#define INIT_QUERY \
+	{ \
+		.query_builder_type = query_builder_type_not_selected, \
+		.compile = &query_builder, \
+		.free = &query_builder_free, \
+		.select = &query_builder_select, \
+		.update = &query_builder_update, \
+		.delete = &query_builder_delete, \
+		.insert = &query_builder_insert, \
+	}
 
-/**
- * for a input of type char add the values
- * @param[out] query query builded
- * @param[in] key name of the column
- * @param[in] value od the column
- * @return error code if error else 0
- */
-int insert_values_char(struct query* query, char* key, char* value);
-
-/**
- * for a input of type integer add the values
- * @param[out] query query builded
- * @param[in] key name of the column
- * @param[in] value od the column
- * @return error code if error else 0
- */
-int insert_values_int(struct query* query, char* key, intmax_t value);
-
-/** More idiomatic insert for values */
-#define insert_values(Q, K, X) _Generic((X), \
-	char* : insert_values_char \
-	const char* : insert_values_char \
-	int : insert_values_int \
-	const int : insert_values_int \
-	unsigned : insert_values_int \
-	const unsigned : insert_values_int \
-	long : insert_values_int \
-	const long : insert_values_int \
-)(Q, K, X)
-
-/**
- * add columns to the result
- * @param[out] query query builded
- * @param[in] ... list of column names
- * @return error code if error else 0
- */
-int select(struct query* query, ...);
-
-/**
- * add columns to the result casted as int
- * @param[out] query query builded
- * @param[in] ... list of column names
- * @return error code if error else 0
- */
-int select_int(struct query* query, ...);
-
-/**
- * add columns to the result casted as char
- * @param[out] query query builded
- * @param[in] ... list of column names
- * @return error code if error else 0
- */
-int select_char(struct query* query, ...);
+struct query_builder* query_builder(struct query_builder_table* table);
+#define Query query_builder
 
 #endif
