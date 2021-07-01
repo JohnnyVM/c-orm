@@ -112,7 +112,7 @@ struct query_builder_table_property* query_builder_table_column(
 		return NULL;
 	}
 
-	dest->type = table_property_column;
+	dest->type = query_builder_table_property_column;
 	dest->value = column_dest;
 	dest->free = &query_builder_table_property_free;
 	return dest;
@@ -203,14 +203,13 @@ struct query_builder_table* query_builder_table_add_schema(
 		struct query_builder_table *table,
 		char* schema_name)
 {
-	int len;
 	if(table == NULL) {
 		struct logging *log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "%s", strerror(EINVAL));
 		return NULL;
 	}
 
-	snprintf(table->schema, MAX_IDENTIFIER_NAME_LENGTH, "%s", schema_name);
+	int len = snprintf(table->schema, MAX_IDENTIFIER_NAME_LENGTH, "%s", schema_name);
 	if(len < 0 || len >= MAX_IDENTIFIER_NAME_LENGTH) {
 		struct logging* log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 		log->error(log, "Table schema name %s truncated as %s", schema_name, table->schema);

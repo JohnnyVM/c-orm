@@ -5,6 +5,7 @@ COMMON_FLAGS += -g3 -ftrapv -fno-omit-frame-pointer
 else
 COMMON_FLAGS += -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG
 endif
+
 ifeq (${sanitice}, true)
 COMMON_FLAGS += -fsanitize=address -fsanitize=leak -fsanitize=undefined
 endif
@@ -25,7 +26,7 @@ DEPENDENCIES := $(patsubst %.c,%.d,${SOURCES})
 
 INCLUDE_FLAGS := -I./include
 WARNING_FLAGS := -Wextra -Wall -Wshadow -Wdouble-promotion \
-				-Wformat=2 -fno-common -Wconversion -Wundef
+				-Wformat=2 -fno-common -Wconversion -Wundef -Wtrampolines
 ifneq (${CC}, clang)
 WARNING_FLAGS += -Wformat-truncation -fanalyzer
 endif

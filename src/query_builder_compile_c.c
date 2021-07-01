@@ -218,7 +218,6 @@ char* query_builder_compile(struct query_builder* query)
 			log = get_logger(QUERY_BUILDER_LOGGER_NAME);
 			log->error(log, "%s", strerror(EINVAL));
 			return NULL;
-			break;
 
 		case query_builder_type_select:
 			query_string = query_builder_compile_select(query);
